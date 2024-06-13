@@ -16,5 +16,6 @@ import { ManagerEntity } from '../manager/entities/manager.entity';
     forwardRef(() => ManagerEntity),
   ],
   providers: [AuthService],
+  exports: [AuthModule, AuthService],
 })
 export class AuthModule {}

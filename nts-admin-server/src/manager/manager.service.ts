@@ -3,11 +3,20 @@ import { DataSource } from 'typeorm';
 import { CreateManagerDto, LoginManagerDto } from './dto/post-manager.dto';
 import { ManagerEntity } from './entities/manager.entity';
 import * as bcrypt from 'bcrypt';
-import { IdDuplicateException } from '../commons/exception/service.exception';
+import {
+  IdDuplicateException,
+  ManagerNotFoundException,
+  WrongPasswordException,
+} from '../commons/exception/service.exception';
 import { _UNIQUE_VIOLATION } from '../commons/exception/error-code';
+import { AuthService } from '../auth/auth.service';
 @Injectable()
 export class ManagerService {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(
+    private readonly dataSource: DataSource,
+
+    private readonly authService: AuthService,
+  ) {}
 
   private logger = new Logger(ManagerService.name);
 
@@ -32,5 +41,20 @@ export class ManagerService {
     }
   }
 
-  async loginManager(loginManagerDto: LoginManagerDto) {}
+  async loginManager(loginManagerDto: LoginManagerDto) {
+    const manager = await this.dataSource
+      .getRepository(ManagerEntity)
+      .createQueryBuilder()
+      .where('id = :id', { id: loginManagerDto.id })
+      .getOne();
+    if (manager === null || manager === undefined) {
+      throw ManagerNotFoundException(`${loginManagerDto.id}는 등록되지 않은 ID 입니다.`);
+    }
+
+    if (!(await bcrypt.compare(loginManagerDto.pw, manager.pw))) {
+      throw WrongPasswordException();
+    }
+
+    return await this.authService.jwtLogin(loginManagerDto.id);
+  }
 }
