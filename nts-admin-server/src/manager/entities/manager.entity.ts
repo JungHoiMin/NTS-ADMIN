@@ -1,10 +1,8 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { CommonEntity } from '../../commons/entities/common.entity';
 
 @Entity({ name: 'manager' })
-export class ManagerEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  idx: number;
-
+export class ManagerEntity extends CommonEntity {
   @Column('varchar', { nullable: false, unique: true })
   id: string;
 
@@ -25,13 +23,4 @@ export class ManagerEntity extends BaseEntity {
     nullable: true,
   })
   joinDate: Date;
-
-  @Column('boolean', { nullable: false, default: true })
-  isUsed: boolean;
-
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
-  })
-  createdAt: Date;
 }

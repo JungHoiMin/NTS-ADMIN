@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ManagerService } from './manager.service';
 import { CreateManagerDto, LoginManagerDto, UpdateManagerDto } from './dto/post-manager.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
@@ -19,8 +19,9 @@ export class ManagerController {
   })
   @ApiParam({ name: 'teamType', description: '팀 구분', required: true, enum: ['NTS', 'AM'] })
   @ApiBearerAuth('access-token')
-  async getAllManagerByTeamType(@Param('teamType') teamType: string) {
-    return await this.managerService.findManager('ALL',{ teamType });
+  async getAllManagerByTeamType(@Req() req: Request, @Param('teamType') teamType: string) {
+    this.logger.log(`${req['user'].id}님이 ${teamType}팀의 담당자 리스트를 조회함`);
+    return await this.managerService.findManager('ALL', { teamType });
   }
 
   @Get('team/:teamType/:teamId')
@@ -33,9 +34,11 @@ export class ManagerController {
   @ApiParam({ name: 'teamId', description: '팀 ID', required: true, type: Number })
   @ApiBearerAuth('access-token')
   async getAllManagerByTeamInfo(
+    @Req() req: Request,
     @Param('teamType') teamType: string,
     @Param('teamId') teamId: number,
   ) {
+    this.logger.log(`${req['user'].id}님이 ${teamType}${teamId}팀의 담당자 리스트를 조회함`);
     return await this.managerService.findManager('ALL', { teamType, teamId });
   }
 
@@ -47,7 +50,8 @@ export class ManagerController {
   })
   @ApiParam({ name: 'id', description: 'ID', required: true })
   @ApiBearerAuth('access-token')
-  async getManager(@Param('id') id: string) {
+  async getManager(@Req() req: Request, @Param('id') id: string) {
+    this.logger.log(`${req['user'].id}님이 ${id}님의 정보를 조회함`);
     return await this.managerService.findManager('ONE', { id });
   }
 
@@ -60,11 +64,27 @@ export class ManagerController {
   @ApiParam({ name: 'id', description: '아이디', required: true })
   @ApiBody({ type: UpdateManagerDto })
   @ApiBearerAuth('access-token')
-  updateManager(@Param('id') id: string, @Body() updateManagerDto: UpdateManagerDto) {
-    console.log({
-      id,
-      ...updateManagerDto,
-    });
+  async updateManagerAM(
+    @Req() req: Request,
+    @Param('id') id: string,
+    @Body() updateManagerDto: UpdateManagerDto,
+  ) {
+    this.logger.log(`${req['user'].id}님이 ${id}님의 정보 수정을 요청함`);
+    await this.managerService.updateManager(req['user'].id, id, updateManagerDto);
+  }
+
+  @Put()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: '본인 정보 수정',
+    description: 'Body를 받아 본인 정보 수정함',
+  })
+  @ApiBody({ type: UpdateManagerDto })
+  @ApiBearerAuth('access-token')
+  async updateManagerNTS(@Req() req: Request, @Body() updateManagerDto: UpdateManagerDto) {
+    const id = req['user'].id;
+    this.logger.log(`${id}님이 정보 수정을 요청함`);
+    await this.managerService.updateManager(id, id, updateManagerDto);
   }
 
   @Post('signup')
@@ -84,6 +104,7 @@ export class ManagerController {
   })
   @ApiBody({ type: LoginManagerDto })
   async loginManager(@Body() loginManagerDto: LoginManagerDto) {
+    this.logger.log(`${loginManagerDto.id}님이 로그인 요청함`);
     return await this.managerService.loginManager(loginManagerDto);
   }
 }

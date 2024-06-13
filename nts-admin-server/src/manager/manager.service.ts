@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { CreateManagerDto, LoginManagerDto } from './dto/post-manager.dto';
+import { CreateManagerDto, LoginManagerDto, UpdateManagerDto } from './dto/post-manager.dto';
 import { ManagerEntity } from './entities/manager.entity';
 import * as bcrypt from 'bcrypt';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../commons/exception/service.exception';
 import { _UNIQUE_VIOLATION } from '../commons/exception/error-code';
 import { AuthService } from '../auth/auth.service';
+
 @Injectable()
 export class ManagerService {
   constructor(
@@ -44,8 +45,11 @@ export class ManagerService {
       .addOrderBy('"teamId"', 'ASC')
       .addOrderBy('name', 'ASC');
 
-    if (allOrOne === 'ONE') {
-      return await selectBuilder.getRawOne();
+    if (allOrOne === 'ONE' && options && options.id !== undefined) {
+      const manager = await selectBuilder.getRawOne();
+      if (manager === undefined)
+        throw ManagerNotFoundException(`${options.id}는 등록되지 않은 ID 입니다.`);
+      return manager;
     } else if (allOrOne === 'ALL') {
       return await selectBuilder.getRawMany();
     }
@@ -72,6 +76,31 @@ export class ManagerService {
     }
   }
 
+  async updateManager(updater: string, id: string, updateManagerDto: UpdateManagerDto) {
+    const manager = await this.findManager('ONE', { id });
+
+    try {
+      if (manager.teamType === 'NTS') {
+        if (updateManagerDto.pw !== undefined) {
+          const salt = await bcrypt.genSalt();
+          updateManagerDto.pw = await bcrypt.hash(updateManagerDto.pw, salt);
+        }
+      }
+
+      await this.dataSource
+        .createQueryBuilder()
+        .update(ManagerEntity)
+        .set({ updater, ...updateManagerDto })
+        .where('id = :id', { id })
+        .execute();
+
+      this.logger.log(`${manager.id}님의 정보가 수정되었습니다.`);
+      return { id: id, name: updateManagerDto.name };
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async loginManager(loginManagerDto: LoginManagerDto) {
     const manager = await this.dataSource
       .getRepository(ManagerEntity)
@@ -86,6 +115,7 @@ export class ManagerService {
       throw WrongPasswordException();
     }
 
+    this.logger.log(`${manager.id}님의 정보가 수정되었습니다.`);
     return await this.authService.jwtLogin(loginManagerDto.id);
   }
 }
