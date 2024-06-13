@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ManagerEntity } from '../manager/entities/manager.entity';
+import { JwtStrategy } from './jwt/auth.jwt.strategy';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { ManagerEntity } from '../manager/entities/manager.entity';
     }),
     forwardRef(() => ManagerEntity),
   ],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   exports: [AuthModule, AuthService],
 })
 export class AuthModule {}

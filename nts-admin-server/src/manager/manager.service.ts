@@ -20,6 +20,37 @@ export class ManagerService {
 
   private logger = new Logger(ManagerService.name);
 
+  async findManager(
+    allOrOne: 'ALL' | 'ONE',
+    options?: { id?: string; teamType?: string; teamId?: number },
+  ) {
+    const selectBuilder = this.dataSource
+      .getRepository(ManagerEntity)
+      .createQueryBuilder()
+      .select(['id', 'name', '"teamType"', '"teamId"', '"joinDate"'])
+      .where('"isUsed" = :isUsed', { isUsed: true });
+
+    if (options !== undefined) {
+      if (options.id !== undefined) selectBuilder.andWhere('id = :id', { id: options.id });
+
+      if (options.teamId !== undefined)
+        selectBuilder.andWhere('"teamId" = :teamId', { teamId: options.teamId });
+
+      if (options.teamType !== undefined)
+        selectBuilder.andWhere('"teamType" = :teamType', { teamType: options.teamType });
+    }
+    selectBuilder
+      .addOrderBy('"joinDate"', 'ASC')
+      .addOrderBy('"teamId"', 'ASC')
+      .addOrderBy('name', 'ASC');
+
+    if (allOrOne === 'ONE') {
+      return await selectBuilder.getRawOne();
+    } else if (allOrOne === 'ALL') {
+      return await selectBuilder.getRawMany();
+    }
+  }
+
   async createManager(createManagerDto: CreateManagerDto) {
     try {
       const { pw, ...data } = createManagerDto;
