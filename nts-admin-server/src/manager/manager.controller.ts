@@ -1,8 +1,20 @@
-import { Body, Controller, Get, Logger, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Put,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ManagerService } from './manager.service';
-import { CreateManagerDto, LoginManagerDto, UpdateManagerDto } from './dto/post-manager.dto';
+import { CreateManagerDto, LoginManagerDto } from './dto/post-manager.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt/auth.jwt.guard';
+import { UpdateManagerDto } from './dto/put-manager.dto';
 
 @Controller('manager')
 @ApiTags('Manager')
@@ -11,7 +23,7 @@ export class ManagerController {
 
   private logger = new Logger(ManagerController.name);
 
-  @Get('team/:teamType/all')
+  @Get('team/:teamType')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: '담당자 리스트를 조회(팀구분)',
@@ -69,8 +81,9 @@ export class ManagerController {
     @Param('id') id: string,
     @Body() updateManagerDto: UpdateManagerDto,
   ) {
-    this.logger.log(`${req['user'].id}님이 ${id}님의 정보 수정을 요청함`);
-    await this.managerService.updateManager(req['user'].id, id, updateManagerDto);
+    const updater = req['user'].id;
+    this.logger.log(`${updater}님이 ${id}님의 정보 수정을 요청함`);
+    await this.managerService.updateManager(updater, id, updateManagerDto);
   }
 
   @Put()
@@ -106,5 +119,30 @@ export class ManagerController {
   async loginManager(@Body() loginManagerDto: LoginManagerDto) {
     this.logger.log(`${loginManagerDto.id}님이 로그인 요청함`);
     return await this.managerService.loginManager(loginManagerDto);
+  }
+
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'NTS 계정 삭제',
+  })
+  @ApiBearerAuth('access-token')
+  async deleteManagerNTS(@Req() req: Request) {
+    const id = req['user'].id;
+    this.logger.log(`${id}님이 ${id} 담당자 정보를 삭제함`);
+    return await this.managerService.deleteManager(id, id);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'AM 계정 삭제',
+  })
+  @ApiParam({ name: 'id', description: '아이디', required: true })
+  @ApiBearerAuth('access-token')
+  async deleteManagerAM(@Req() req: Request, @Param('id') id: string) {
+    const updater = req['user'].id;
+    this.logger.log(`${updater}님이 ${id} 담당자 정보를 삭제함`);
+    return await this.managerService.deleteManager(updater, id);
   }
 }

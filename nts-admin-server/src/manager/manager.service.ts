@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { CreateManagerDto, LoginManagerDto, UpdateManagerDto } from './dto/post-manager.dto';
+import { CreateManagerDto, LoginManagerDto } from './dto/post-manager.dto';
 import { ManagerEntity } from './entities/manager.entity';
 import * as bcrypt from 'bcrypt';
 import {
@@ -10,6 +10,7 @@ import {
 } from '../commons/exception/service.exception';
 import { _UNIQUE_VIOLATION } from '../commons/exception/error-code';
 import { AuthService } from '../auth/auth.service';
+import { UpdateManagerDto } from './dto/put-manager.dto';
 
 @Injectable()
 export class ManagerService {
@@ -117,5 +118,17 @@ export class ManagerService {
 
     this.logger.log(`${manager.id}님의 정보가 수정되었습니다.`);
     return await this.authService.jwtLogin(loginManagerDto.id);
+  }
+
+  async deleteManager(updater: string, id: string) {
+    await this.dataSource
+      .createQueryBuilder()
+      .update(ManagerEntity)
+      .set({ updater, isUsed: false })
+      .where('id = :id', { id })
+      .execute();
+
+    this.logger.log(`${id}님의 정보가 삭제되었습니다.`);
+    return { id };
   }
 }

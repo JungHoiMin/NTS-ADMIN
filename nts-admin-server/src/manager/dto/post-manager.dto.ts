@@ -21,4 +21,3 @@ export class CreateManagerDto {
 }
 
 export class LoginManagerDto extends PickType(CreateManagerDto, ['id', 'pw'] as const) {}
-export class UpdateManagerDto extends PartialType(OmitType(CreateManagerDto, ['id'] as const)) {}

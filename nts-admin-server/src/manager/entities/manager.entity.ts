@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { CommonEntity } from '../../commons/entities/common.entity';
 
 @Entity({ name: 'manager' })
