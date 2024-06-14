@@ -98,7 +98,7 @@ export class ManagerService {
       this.logger.log(`${manager.id}님의 정보가 수정되었습니다.`);
       return { id: id, name: updateManagerDto.name };
     } catch (e) {
-      console.log(e);
+      this.logger.error(e);
     }
   }
 
@@ -128,7 +128,7 @@ export class ManagerService {
       .where('id = :id', { id })
       .execute();
 
-    this.logger.log(`${id}님의 정보가 삭제되었습니다.`);
+    this.logger.log(`${updater}님이 ${id}님의 정보를 삭제했습니다.`);
     return { id };
   }
 }
