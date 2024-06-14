@@ -4,9 +4,9 @@ import { CreateManagerDto, LoginManagerDto } from './dto/post-manager.dto';
 import { ManagerEntity } from './entities/manager.entity';
 import * as bcrypt from 'bcrypt';
 import {
-  IdDuplicateException,
   CustomNotFoundException,
   WrongPasswordException,
+  DuplicateException,
 } from '../commons/exception/service.exception';
 import { _UNIQUE_VIOLATION } from '../commons/exception/error-code';
 import { AuthService } from '../auth/auth.service';
@@ -72,7 +72,7 @@ export class ManagerService {
       return { id: createManagerDto.id, name: createManagerDto.name };
     } catch (e) {
       if (+e.code === _UNIQUE_VIOLATION) {
-        throw IdDuplicateException(`${createManagerDto.id}는 이미 사용중인 아이디입니다.`);
+        throw DuplicateException(`${createManagerDto.id}는 이미 사용중인 아이디입니다.`);
       }
     }
   }
