@@ -5,7 +5,7 @@ import { ManagerEntity } from './entities/manager.entity';
 import * as bcrypt from 'bcrypt';
 import {
   IdDuplicateException,
-  ManagerNotFoundException,
+  CustomNotFoundException,
   WrongPasswordException,
 } from '../commons/exception/service.exception';
 import { _UNIQUE_VIOLATION } from '../commons/exception/error-code';
@@ -49,7 +49,7 @@ export class ManagerService {
     if (allOrOne === 'ONE' && options && options.id !== undefined) {
       const manager = await selectBuilder.getRawOne();
       if (manager === undefined)
-        throw ManagerNotFoundException(`${options.id}는 등록되지 않은 ID 입니다.`);
+        throw CustomNotFoundException(`${options.id}는 등록되지 않은 ID 입니다.`);
       return manager;
     } else if (allOrOne === 'ALL') {
       return await selectBuilder.getRawMany();
@@ -109,7 +109,7 @@ export class ManagerService {
       .where('id = :id', { id: loginManagerDto.id })
       .getOne();
     if (manager === null || manager === undefined) {
-      throw ManagerNotFoundException(`${loginManagerDto.id}는 등록되지 않은 ID 입니다.`);
+      throw CustomNotFoundException(`${loginManagerDto.id}는 등록되지 않은 ID 입니다.`);
     }
 
     if (!(await bcrypt.compare(loginManagerDto.pw, manager.pw))) {

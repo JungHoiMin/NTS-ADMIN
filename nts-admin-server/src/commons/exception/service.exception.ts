@@ -1,4 +1,4 @@
-import { DUPLICATED_ID, MANAGER_NOT_FOUND, TErrorCode, WRONG_PASSWORD } from "./error-code";
+import { DUPLICATED_ID, NOT_FOUND, TErrorCode, WRONG_PASSWORD } from './error-code';
 
 export class ServiceException extends Error {
   readonly errorCode: TErrorCode;
@@ -18,8 +18,8 @@ export const IdDuplicateException = (message?: string): ServiceException => {
   return new ServiceException(DUPLICATED_ID, message);
 };
 
-export const ManagerNotFoundException = (message?: string): ServiceException => {
-  return new ServiceException(MANAGER_NOT_FOUND, message);
+export const CustomNotFoundException = (message?: string): ServiceException => {
+  return new ServiceException(NOT_FOUND, message);
 };
 
 export const WrongPasswordException = (message?: string): ServiceException => {
