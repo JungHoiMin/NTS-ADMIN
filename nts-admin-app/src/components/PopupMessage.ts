@@ -42,7 +42,21 @@ export class PopupMessage {
 			render(
 				h(
 					'div',
-					{ class: 'popup-bg' },
+					{
+						class: 'popup-bg',
+						tabIndex: 0,
+						onVnodeMounted(vnode) {
+							if (vnode.el === null) return;
+							vnode.el.focus();
+						},
+						onKeydown: (ev) => {
+							console.log(ev.code);
+							if (['Enter', 'Escape', 'NumpadEnter'].includes(ev.code)) {
+								resolve(true);
+								this.reset();
+							}
+						},
+					},
 					h('div', { class: 'popup-box' }, [
 						this.newContent(title, body),
 						h(
@@ -72,7 +86,24 @@ export class PopupMessage {
 			render(
 				h(
 					'div',
-					{ class: 'popup-bg' },
+					{
+						class: 'popup-bg',
+						tabIndex: 0,
+						onVnodeMounted(vnode) {
+							if (vnode.el === null) return;
+							vnode.el.focus();
+						},
+						onKeydown: (ev) => {
+							console.log(ev.code);
+							if (['Enter', 'NumpadEnter'].includes(ev.code)) {
+								resolve(true);
+								this.reset();
+							} else if (ev.code === 'Escape') {
+								reject(false);
+								this.reset();
+							}
+						},
+					},
 					h('div', { class: 'popup-box' }, [
 						this.newContent(title, body),
 						h('div', { class: 'popup-actions' }, [

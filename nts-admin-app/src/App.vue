@@ -28,7 +28,7 @@ main,
 		background-color: #12121260;
 		width: 100%;
 		height: 100%;
-		z-index: 1;
+		z-index: 999;
 		display: flex;
 		justify-content: center;
 		align-items: center;
