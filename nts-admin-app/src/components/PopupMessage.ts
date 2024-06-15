@@ -50,7 +50,6 @@ export class PopupMessage {
 							vnode.el.focus();
 						},
 						onKeydown: (ev) => {
-							console.log(ev.code);
 							if (['Enter', 'Escape', 'NumpadEnter'].includes(ev.code)) {
 								resolve(true);
 								this.reset();
@@ -94,7 +93,6 @@ export class PopupMessage {
 							vnode.el.focus();
 						},
 						onKeydown: (ev) => {
-							console.log(ev.code);
 							if (['Enter', 'NumpadEnter'].includes(ev.code)) {
 								resolve(true);
 								this.reset();
