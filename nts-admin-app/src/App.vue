@@ -38,13 +38,26 @@ main,
 				0 12px 32px 4px rgba(0, 0, 0, 0.36),
 				0 8px 20px rgba(0, 0, 0, 0.72);
 			background-color: white;
-			width: 320px;
-			height: 240px;
+			min-width: 320px;
+			min-height: 240px;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 			text-align: center;
+			.popup-content {
+				padding: 10px 30px;
+				.popup-body {
+					user-select: none;
+					white-space: pre;
+					word-wrap: break-word;
+					word-break: keep-all;
+					line-height: 30px;
+				}
+			}
+			.popup-actions {
+				padding: 10px;
+			}
 		}
 	}
 }
