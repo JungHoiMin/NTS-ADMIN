@@ -15,6 +15,7 @@ import { CreateManagerDto, LoginManagerDto } from './dto/post-manager.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt/auth.jwt.guard';
 import { UpdateManagerDto } from './dto/put-manager.dto';
+import { Request } from 'express';
 
 @Controller('manager')
 @ApiTags('Manager')

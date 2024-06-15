@@ -15,6 +15,7 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs
 import { JwtAuthGuard } from '../auth/jwt/auth.jwt.guard';
 import { CreateInsuranceDto } from './dto/post-insurance.dto';
 import { UpdateInsuranceDto } from './dto/put-insurance.dto';
+import { Request } from 'express';
 
 @Controller('insurance')
 @ApiTags('Insurance')
