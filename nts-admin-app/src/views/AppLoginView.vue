@@ -45,6 +45,10 @@ const clickLoginBtn = async (formEl: FormInstance | undefined) => {
 	});
 };
 
+const clickGoSignupBtn = () => {
+	router.push({ name: 'Sign Up', replace: false });
+};
+
 const keyDownLoginForm = (ev: KeyboardEvent) => {
 	if (ev.key === 'Enter') clickLoginBtn(loginFormRef.value);
 };
@@ -90,6 +94,11 @@ onMounted(() => {
 					로그인
 				</el-button>
 			</el-form-item>
+			<el-form-item>
+				<el-button class="form-btn" plain type="info" @click="clickGoSignupBtn">
+					회원가입 하러가기
+				</el-button>
+			</el-form-item>
 		</el-form>
 	</div>
 </template>
@@ -107,10 +116,11 @@ onMounted(() => {
 		width: 88px;
 	}
 	.login-form {
-		width: 300px;
+		width: 344px;
 		.form-btn {
 			width: 100%;
 		}
+		margin-bottom: 100px;
 	}
 }
 </style>

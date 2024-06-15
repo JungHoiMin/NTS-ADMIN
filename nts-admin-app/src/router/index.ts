@@ -6,14 +6,20 @@ import NTSAppManagementView from '@/views/NTSAppManagement/NTSAppManagementView.
 import DeployManagementView from '@/views/DeployManagement/DeployManagementView.vue';
 import AppMainView from '@/views/AppMainView.vue';
 import AppLoginView from '@/views/AppLoginView.vue';
+import AppSignupView from '@/views/AppSignupView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
 		{
 			path: '/login',
-			name: 'login',
+			name: 'Login',
 			component: AppLoginView,
+		},
+		{
+			path: '/signup',
+			name: 'Sign Up',
+			component: AppSignupView,
 		},
 		{
 			path: '/nts-admin',
