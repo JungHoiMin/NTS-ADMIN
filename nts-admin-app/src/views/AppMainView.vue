@@ -1,5 +1,20 @@
 <script setup lang="ts">
 import AppSideBar from '@/layouts/AppSideBar.vue';
+import { onMounted } from 'vue';
+import { useInsuranceStore } from '@/store/useInsuranceStore';
+import { loadInsuranceList } from '@/modules/apis/apis.insurance';
+
+const insuranceStore = useInsuranceStore();
+
+onMounted(() => {
+	loadInsuranceList()
+		.then((data) => {
+			insuranceStore.setInsuranceList(data);
+		})
+		.catch((e) => {
+			console.error(e);
+		});
+});
 </script>
 
 <template>

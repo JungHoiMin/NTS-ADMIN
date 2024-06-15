@@ -1,7 +1,45 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import AppTable from '@/components/AppTable.vue';
+import { useInsuranceStore } from '@/store/useInsuranceStore';
+import { storeToRefs } from 'pinia';
+import { PopupMessage } from '@/components/PopupMessage';
+
+const insuranceStore = useInsuranceStore();
+const { getInsuranceList } = storeToRefs(insuranceStore);
+const insuranceColumnsList = [
+	{ prop: 'code', label: '보험사 코드', width: 120 },
+	{ prop: 'name', label: '보험사 명', width: 200 },
+	{ prop: 'suffix', label: '접미사(영문)', width: 200 },
+	{ prop: 'NTSTeamId', label: 'NTS 담당자', width: 300 },
+];
+
+const clickAddInsuranceBtn = () => {
+	PopupMessage.alert('추가', '');
+};
+</script>
 
 <template>
-	<div>보험사와 스폰서사 관리</div>
+	<h1>보험사와 스폰서사 관리</h1>
+	{{ getInsuranceList }}
+	<hr />
+	<AppTable
+		v-model:column-list="insuranceColumnsList"
+		v-model:table-data="getInsuranceList"
+		key-name="code"
+		@addItem="clickAddInsuranceBtn"
+	>
+		<template #actions="{ key }">
+			<el-button
+				@click="
+					() => {
+						console.log(key);
+					}
+				"
+			>
+				버튼
+			</el-button>
+		</template>
+	</AppTable>
 </template>
 
 <style scoped></style>
