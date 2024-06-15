@@ -7,7 +7,7 @@ export const getAxiosError = (e: unknown) => {
 		if (e.response) {
 			return new Error(e.response.data.message);
 		} else if (e.request) {
-			return new Error('요청이 전송 되었으나 응답이 수신되지 않았습니다.');
+			return new Error('요청이 전송 되었으나, 응답이 수신되지 않았습니다.\n서버와의 연결을 확인해 보시기 바랍니다.');
 		} else {
 			return new Error('오류가 발생한 요청을 설정하는 동안 문제가 발생했습니다.');
 		}
