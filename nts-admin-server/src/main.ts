@@ -15,6 +15,6 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document);
 
   app.useGlobalFilters(new ServiceExceptionToHttpExceptionFilter());
-  await app.listen(3000);
+  await app.listen(5001);
 }
 bootstrap();
