@@ -15,4 +15,37 @@ main,
 	margin: 0;
 	padding: 0;
 }
+//h1,
+//h2 {
+//	font-family: 맑은 고딕, serif;
+//}
+
+#popup-message {
+	.popup-bg {
+		position: fixed;
+		top: 0;
+		right: 0;
+		background-color: #12121260;
+		width: 100%;
+		height: 100%;
+		z-index: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.popup-box {
+			box-shadow:
+				0 12px 32px 4px rgba(0, 0, 0, 0.36),
+				0 8px 20px rgba(0, 0, 0, 0.72);
+			background-color: white;
+			width: 320px;
+			height: 240px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+		}
+	}
+}
 </style>
