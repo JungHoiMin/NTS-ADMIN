@@ -6,6 +6,7 @@ import type { RequestLoginType } from '@/types/types.login';
 import { login } from '@/modules/apis/apis.login';
 import { setAuthorizationToken } from '@/modules/apis';
 import { useRouter } from 'vue-router';
+import { secureLocalStorage, secureSessionStorage } from '@/modules/storages';
 
 const router = useRouter();
 
@@ -30,9 +31,9 @@ const clickLoginBtn = async (formEl: FormInstance | undefined) => {
 			login(formData)
 				.then((token) => {
 					setAuthorizationToken(token);
-					sessionStorage.setItem('token', token);
-					if (isAutoLogin.value) localStorage.setItem('loginInfo', JSON.stringify(formData));
-					else localStorage.setItem('loginInfo', JSON.stringify({ id: formData.id }));
+					secureSessionStorage.setItem('token', { token });
+					if (isAutoLogin.value) secureLocalStorage.setItem('loginInfo', formData);
+					else secureLocalStorage.setItem('loginInfo', { id: formData.id });
 					router.push({ name: 'NTS Admin', replace: false });
 				})
 				.catch((e) => {
@@ -49,9 +50,8 @@ const keyDownLoginForm = (ev: KeyboardEvent) => {
 };
 
 onMounted(() => {
-	const storageLoginInfo = localStorage.getItem('loginInfo');
-	if (storageLoginInfo) {
-		const loginInfo = JSON.parse(storageLoginInfo);
+	const loginInfo = secureLocalStorage.getItem<{ id?: string; pw?: string }>('loginInfo');
+	if (loginInfo !== null) {
 		if (loginInfo.id) {
 			formData.id = loginInfo.id;
 			if (loginInfo.pw) {
