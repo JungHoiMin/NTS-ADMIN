@@ -11,6 +11,9 @@ export class secureSessionStorage {
 
 		return JSON.parse(decrypt(storage)) as T;
 	}
+	static removeItem(key: string) {
+		sessionStorage.removeItem(key);
+	}
 }
 
 export class secureLocalStorage {
@@ -23,5 +26,8 @@ export class secureLocalStorage {
 		if (storage === null) return null;
 
 		return JSON.parse(decrypt(storage)) as T;
+	}
+	static removeItem(key: string) {
+		localStorage.removeItem(key);
 	}
 }
