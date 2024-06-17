@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppTable from '@/components/AppTable.vue';
-import { useInsuranceStore } from '@/store/useInsuranceStore';
+import { useInsuranceStore } from '@/stores/useInsuranceStore';
 import { storeToRefs } from 'pinia';
 import { PopupMessage } from '@/components/PopupMessage';
 

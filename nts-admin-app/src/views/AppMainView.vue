@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppSideBar from '@/layouts/AppSideBar.vue';
 import { onMounted } from 'vue';
-import { useInsuranceStore } from '@/store/useInsuranceStore';
+import { useInsuranceStore } from '@/stores/useInsuranceStore';
 import { loadInsuranceList } from '@/modules/apis/apis.insurance';
 
 const insuranceStore = useInsuranceStore();
