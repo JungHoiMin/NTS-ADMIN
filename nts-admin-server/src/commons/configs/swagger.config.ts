@@ -8,5 +8,6 @@ export const getSwaggerConfig = () => {
     .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'Token' }, 'access-token')
     .addTag('Manager')
     .addTag('Insurance')
+    .addTag('Sponsor')
     .build();
 };
