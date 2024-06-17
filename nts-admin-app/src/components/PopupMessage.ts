@@ -29,7 +29,7 @@ export class PopupMessage {
 	private static newContent(title: string, body: string) {
 		return h('div', { class: 'popup-content' }, [
 			h('h3', { class: 'popup-title' }, title),
-			h('p', { class: 'popup-body' }, body),
+			h('div', { class: 'popup-body', innerHTML: body }),
 		]);
 	}
 
