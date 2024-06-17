@@ -75,7 +75,7 @@ export class InsuranceService {
       .createQueryBuilder()
       .update(InsuranceEntity)
       .set({ updater, isUsed: false })
-      .where('id = :id', { code })
+      .where('code = :code', { code })
       .execute();
 
     this.logger.log(`${updater}님이 ${code}번 보험사 정보를 삭제했습니다.`);
