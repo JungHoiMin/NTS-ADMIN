@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import type { FormInstance, FormRules } from 'element-plus';
-import { validateEmpty } from '@/modules/commons/form.validates';
 import type { RequestLoginType } from '@/types/types.login';
 import { login } from '@/modules/apis/apis.login';
 import { setAuthorizationToken } from '@/modules/apis';
 import { useRouter } from 'vue-router';
 import { secureLocalStorage, secureSessionStorage } from '@/modules/storages';
 import { PopupMessage } from '@/components/PopupMessage';
+import { validateEmpty } from '@/modules/commons/form/form.validates';
 
 const router = useRouter();
 
-const loginFormRef = ref<FormInstance>();
+const formRef = ref<FormInstance>();
 
 const isAutoLogin = ref<boolean>(false);
 
@@ -20,7 +20,7 @@ const formData = reactive<RequestLoginType>({
 	pw: '',
 });
 
-const loginRules = reactive<FormRules<typeof formData>>({
+const rules = reactive<FormRules<typeof formData>>({
 	id: [{ validator: validateEmpty, trigger: 'blur' }],
 	pw: [{ validator: validateEmpty, trigger: 'blur' }],
 });
@@ -51,7 +51,7 @@ const clickGoSignupBtn = () => {
 };
 
 const keyDownLoginForm = (ev: KeyboardEvent) => {
-	if (ev.key === 'Enter') clickLoginBtn(loginFormRef.value);
+	if (ev.key === 'Enter' || ev.key === 'NumpadEnter') clickLoginBtn(formRef.value);
 };
 
 onMounted(() => {
@@ -62,7 +62,7 @@ onMounted(() => {
 			if (loginInfo.pw) {
 				formData.pw = loginInfo.pw;
 				isAutoLogin.value = true;
-				clickLoginBtn(loginFormRef.value);
+				clickLoginBtn(formRef.value);
 			}
 		}
 	}
@@ -72,12 +72,12 @@ onMounted(() => {
 <template>
 	<div class="login-view">
 		<el-form
-			ref="loginFormRef"
+			ref="formRef"
 			class="login-form"
 			:model="formData"
 			label-position="right"
 			label-width="auto"
-			:rules="loginRules"
+			:rules="rules"
 			status-icon
 			@keydown="keyDownLoginForm"
 		>
@@ -91,7 +91,7 @@ onMounted(() => {
 			</el-form-item>
 			<el-checkbox v-model="isAutoLogin" label="자동로그인" :tabindex="3" />
 			<el-form-item>
-				<el-button class="form-btn" type="primary" @click="clickLoginBtn(loginFormRef)">
+				<el-button class="form-btn" type="primary" @click="clickLoginBtn(formRef)">
 					로그인
 				</el-button>
 			</el-form-item>
