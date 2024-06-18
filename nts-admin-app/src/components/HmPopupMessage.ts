@@ -1,7 +1,7 @@
 import { h, render } from 'vue';
 import { ElButton } from 'element-plus';
 
-export class PopupMessage {
+export class HmPopupMessage {
 	private static elementId = 'popup-message';
 
 	private static reset() {
