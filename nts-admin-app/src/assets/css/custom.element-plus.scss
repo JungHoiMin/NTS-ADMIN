@@ -1,0 +1,21 @@
+.table-row > .actions > .cell {
+ display: none;
+}
+
+.table-row:hover > .actions > .cell {
+ display: block;
+}
+
+.table-row {
+ height: 50px;
+
+ .actions > .cell {
+  display: none;
+ }
+
+ :hover {
+  .actions > .cell {
+   display: none;
+  }
+ }
+}
