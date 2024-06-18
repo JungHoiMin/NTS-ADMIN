@@ -6,7 +6,7 @@ import { login } from '@/modules/apis/apis.login';
 import { setAuthorizationToken } from '@/modules/apis';
 import { useRouter } from 'vue-router';
 import { secureLocalStorage, secureSessionStorage } from '@/modules/storages';
-import { PopupMessage } from '@/components/PopupMessage';
+import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { validateEmpty } from '@/modules/commons/form/form.validates';
 
 const router = useRouter();
@@ -38,7 +38,7 @@ const clickLoginBtn = async (formEl: FormInstance | undefined) => {
 					router.push({ name: 'NTS Admin', replace: false });
 				})
 				.catch((e) => {
-					PopupMessage.alert('로그인 실패', e.message);
+					HmPopupMessage.alert('로그인 실패', e.message);
 				});
 		} else {
 			console.error('로그인 페이지 유효성 검사 실패', invalidFields);
