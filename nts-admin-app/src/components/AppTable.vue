@@ -1,13 +1,31 @@
 <script setup lang="ts">
-import { defineModel, ref } from 'vue';
+import { computed, defineModel, type PropType, ref } from 'vue';
 import type { TableColumnType } from '@/types/types.table';
 
 const columnList = defineModel<TableColumnType[]>('columnList', { required: true });
 const tableData = defineModel<any[]>('tableData', { required: true });
-defineProps({
+
+const searchText = ref('');
+const searchedTableData = computed(() => {
+	if (props.searchKeyList === undefined || props.searchKeyList.length === 0) return tableData.value;
+	return tableData.value.filter((item) => {
+		if (props.searchKeyList === undefined) return true;
+
+		for (const key of props.searchKeyList) {
+			if (item[key].includes(searchText.value)) {
+				return true;
+			}
+		}
+		return false;
+	});
+});
+const props = defineProps({
 	keyName: {
 		type: String,
 		required: true,
+	},
+	searchKeyList: {
+		type: Array as PropType<string[]>,
 	},
 });
 defineEmits(['addItem', 'editItem', 'deleteItem']);
@@ -20,9 +38,17 @@ const cellClassName = (data: { row: any; column: any; rowIndex: number; columnIn
 </script>
 
 <template>
+	<el-row :gutter="20" justify="space-between">
+		<el-col :span="20" v-if="searchKeyList && searchKeyList.length > 0">
+			<el-input placeholder="보험사 코드 or 보험사 명" v-model="searchText" />
+		</el-col>
+		<el-col :span="searchKeyList && searchKeyList.length > 0 ? 4 : 24" style="text-align: right">
+			<el-button @click="$emit('addItem')" type="primary">추가하기</el-button>
+		</el-col>
+	</el-row>
 	<el-table
-		:data="tableData"
-		style="width: 100%"
+		class-name="app-table-section"
+		:data="searchedTableData"
 		row-class-name="table-row"
 		:cell-class-name="cellClassName"
 	>
@@ -49,7 +75,11 @@ const cellClassName = (data: { row: any; column: any; rowIndex: number; columnIn
 			</template>
 		</el-table-column>
 	</el-table>
-	<el-button @click="$emit('addItem')">추가하기</el-button>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.app-table-section {
+	width: 100%;
+	height: calc(100% - 120px);
+}
+</style>

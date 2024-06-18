@@ -43,6 +43,7 @@ const clickDeleteInsuranceBtn = (idx: number) => {
 	<AppTable
 		v-model:column-list="insuranceColumnsList"
 		v-model:table-data="getInsuranceList"
+		:search-key-list="['code', 'name']"
 		key-name="idx"
 		@addItem="clickAddInsuranceBtn"
 		@delete-item="clickDeleteInsuranceBtn"
