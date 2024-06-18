@@ -1,4 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {
+	createRouter,
+	createWebHistory,
+	type NavigationGuardNext,
+	type RouteLocationNormalized,
+} from 'vue-router';
 import ManagerManagementView from '@/views/ManagerManagement/ManagerManagementView.vue';
 import CallCenterInfoManagementView from '@/views/CallCenterInfoManagement/CallCenterInfoManagementView.vue';
 import NTSAppManagementView from '@/views/NTSAppManagement/NTSAppManagementView.vue';
@@ -12,6 +17,18 @@ import InsuranceListTable from '@/components/Insurance/InsuranceListTable.vue';
 import SponsorListTable from '@/components/Sponsor/SponsorListTable.vue';
 import AddInsurance from '@/components/Insurance/AddInsurance.vue';
 import AddSponsor from '@/components/Sponsor/AddSponsor.vue';
+import { secureSessionStorage } from '@/modules/storages';
+import { setAuthorizationToken } from '@/modules/apis';
+
+const checkAuth =
+	() => (from: RouteLocationNormalized, to: RouteLocationNormalized, next: NavigationGuardNext) => {
+		const item = secureSessionStorage.getItem<{ token: string }>('token');
+		if (item === null) next({ name: 'Login' });
+		else {
+			setAuthorizationToken(item.token);
+			next();
+		}
+	};
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +51,7 @@ const router = createRouter({
 			path: '/nts-admin',
 			name: 'NTS Admin',
 			component: AppMainView,
+			beforeEnter: checkAuth(),
 			children: [
 				{
 					path: 'insurance',
