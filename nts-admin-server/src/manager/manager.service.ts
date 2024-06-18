@@ -56,6 +56,17 @@ export class ManagerService {
     }
   }
 
+  async findManagerGroupByTeamType(options: { teamType: string }) {
+    return this.dataSource
+      .getRepository(ManagerEntity)
+      .createQueryBuilder()
+      .select(['"teamId" as key', "string_agg(name, ', ') as value"])
+      .where('"isUsed" = :isUsed', { isUsed: true })
+      .andWhere('"teamType" = :teamType', { teamType: options.teamType })
+      .addGroupBy('"teamId"')
+      .getRawMany();
+  }
+
   async createManager(createManagerDto: CreateManagerDto) {
     try {
       const { pw, ...data } = createManagerDto;

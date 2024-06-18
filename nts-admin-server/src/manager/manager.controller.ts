@@ -37,6 +37,19 @@ export class ManagerController {
     return await this.managerService.findManager('ALL', { teamType });
   }
 
+  @Get('team/:teamType/group')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: '담당자 그룹을 조회(팀구분)',
+    description: '팀 구분을 파라미터로 받아 담당자 그룹을 반환함',
+  })
+  @ApiParam({ name: 'teamType', description: '팀 구분', required: true, enum: ['NTS'] })
+  @ApiBearerAuth('access-token')
+  async getManagerGroupByTeamType(@Req() req: Request, @Param('teamType') teamType: string) {
+    this.logger.log(`${req['user'].id}님이 ${teamType}으로 담당자 그룹을 조회함`);
+    return await this.managerService.findManagerGroupByTeamType({ teamType });
+  }
+
   @Get('team/:teamType/:teamId')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
