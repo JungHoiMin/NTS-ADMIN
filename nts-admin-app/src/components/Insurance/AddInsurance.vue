@@ -47,7 +47,6 @@ const clickAddInsuranceBtn = async (formEl: FormInstance | undefined) => {
 		if (isValid) {
 			addInsurance(formData)
 				.then((data) => {
-					console.log(data);
 					insuranceStore.addInsurance({ idx: data.idx, ...formData });
 					ElNotification({
 						title: '보험사 추가',
