@@ -2,8 +2,10 @@ import { h, render } from 'vue';
 import { ElButton } from 'element-plus';
 
 export class PopupMessage {
+	private static elementId = 'popup-message';
+
 	private static reset() {
-		render(null, document.getElementById('popup-message') as HTMLElement);
+		render(null, document.getElementById(this.elementId) as HTMLElement);
 	}
 
 	private static newButton(
@@ -65,7 +67,7 @@ export class PopupMessage {
 						),
 					]),
 				),
-				document.getElementById('popup-message') as HTMLElement,
+				document.getElementById(this.elementId) as HTMLElement,
 			);
 		});
 	}
@@ -110,7 +112,7 @@ export class PopupMessage {
 						]),
 					]),
 				),
-				document.getElementById('popup-message') as HTMLElement,
+				document.getElementById(this.elementId) as HTMLElement,
 			);
 		});
 	}
