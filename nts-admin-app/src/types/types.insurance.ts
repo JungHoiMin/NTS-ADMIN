@@ -12,3 +12,9 @@ export type RequestAddInsuranceType = {
 	suffix: string;
 	NTSTeamId?: number;
 };
+
+export type RequestUpdateInsuranceType = {
+	name: string;
+	suffix: string;
+	NTSTeamId?: number;
+};

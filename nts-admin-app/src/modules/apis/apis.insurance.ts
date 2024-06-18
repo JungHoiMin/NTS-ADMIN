@@ -1,4 +1,8 @@
-import type { InsuranceType, RequestAddInsuranceType } from '@/types/types.insurance';
+import type {
+	InsuranceType,
+	RequestAddInsuranceType,
+	RequestUpdateInsuranceType,
+} from '@/types/types.insurance';
 import axiosInstance, { getAxiosError } from '@/modules/apis/index';
 
 export const loadInsuranceList = async <T = InsuranceType[]>() => {
@@ -19,6 +23,15 @@ export const addInsurance = async <T = { idx: number }, D = RequestAddInsuranceT
 	}
 };
 
+export const editInsurance = async <D = RequestUpdateInsuranceType>(idx: number, data: D) => {
+	try {
+		const response = await axiosInstance.put(`insurance/${idx}`, data);
+		return response.data;
+	} catch (e) {
+		throw getAxiosError(e);
+	}
+};
+
 export const deleteInsurance = async <D = number>(idx: D) => {
 	try {
 		const response = await axiosInstance.delete(`insurance/${idx}`);
@@ -26,4 +39,4 @@ export const deleteInsurance = async <D = number>(idx: D) => {
 	} catch (e) {
 		throw getAxiosError(e);
 	}
-}
+};

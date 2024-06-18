@@ -19,6 +19,7 @@ import AddInsurance from '@/components/Insurance/AddInsurance.vue';
 import AddSponsor from '@/components/Sponsor/AddSponsor.vue';
 import { secureSessionStorage } from '@/modules/storages';
 import { setAuthorizationToken } from '@/modules/apis';
+import EditInsurance from '@/components/Insurance/EditInsurance.vue';
 
 const checkAuth =
 	() => (from: RouteLocationNormalized, to: RouteLocationNormalized, next: NavigationGuardNext) => {
@@ -67,6 +68,12 @@ const router = createRouter({
 							path: 'add',
 							name: 'Add Insurance',
 							component: AddInsurance,
+						},
+						{
+							path: 'edit/:idx',
+							name: 'Edit Insurance',
+							component: EditInsurance,
+							props: true,
 						},
 					],
 				},

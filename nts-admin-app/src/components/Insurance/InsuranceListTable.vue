@@ -20,6 +20,9 @@ const insuranceColumnsList = [
 const clickAddInsuranceBtn = () => {
 	router.push({ name: 'Add Insurance' });
 };
+const clickEditInsuranceBtn = (idx: number) => {
+	router.push({ name: 'Edit Insurance', params: { idx } });
+};
 const clickDeleteInsuranceBtn = (idx: number) => {
 	const insurance = insuranceStore.getInsuranceByIdx(idx);
 	if (insurance === null) return;
@@ -46,7 +49,8 @@ const clickDeleteInsuranceBtn = (idx: number) => {
 		:search-key-list="['code', 'name']"
 		key-name="idx"
 		@addItem="clickAddInsuranceBtn"
-		@delete-item="clickDeleteInsuranceBtn"
+		@editItem="clickEditInsuranceBtn"
+		@deleteItem="clickDeleteInsuranceBtn"
 	>
 		<template #actions="{ key }">
 			<el-button
