@@ -2,8 +2,9 @@
 import AppTable from '@/components/AppTable.vue';
 import { useInsuranceStore } from '@/stores/useInsuranceStore';
 import { storeToRefs } from 'pinia';
-import { PopupMessage } from '@/components/PopupMessage';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const insuranceStore = useInsuranceStore();
 const { getInsuranceList } = storeToRefs(insuranceStore);
 const insuranceColumnsList = [
@@ -14,14 +15,11 @@ const insuranceColumnsList = [
 ];
 
 const clickAddInsuranceBtn = () => {
-	PopupMessage.alert('추가', '');
+	router.push({ name: 'Add Insurance' });
 };
 </script>
 
 <template>
-	<h1>보험사와 스폰서사 관리</h1>
-	{{ getInsuranceList }}
-	<hr />
 	<AppTable
 		v-model:column-list="insuranceColumnsList"
 		v-model:table-data="getInsuranceList"

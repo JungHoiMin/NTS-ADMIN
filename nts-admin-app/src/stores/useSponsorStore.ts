@@ -1,11 +1,6 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-
-type SponsorType = {
-	idx: number;
-	name: string;
-	suffix: string;
-};
+import type { SponsorType } from '@/types/types.sponsor';
 
 export const useSponsorStore = defineStore('sponsor', () => {
 	const sponsorList = ref<SponsorType[]>([]);

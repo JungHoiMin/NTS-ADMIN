@@ -9,3 +9,12 @@ export const loadInsuranceList = async <T = InsuranceType[]>() => {
 		throw getAxiosError(e);
 	}
 };
+
+export const addInsurance = async <D = InsuranceType>(data: D) => {
+	try {
+		const response = await axiosInstance.post('insurance', data);
+		return response.data;
+	} catch (e) {
+		throw getAxiosError(e);
+	}
+};

@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import InsuranceSponsorManagementView from '@/views/InsuranceAndSponsorManagement/InsuranceAndSponsorManagementView.vue';
 import ManagerManagementView from '@/views/ManagerManagement/ManagerManagementView.vue';
 import CallCenterInfoManagementView from '@/views/CallCenterInfoManagement/CallCenterInfoManagementView.vue';
 import NTSAppManagementView from '@/views/NTSAppManagement/NTSAppManagementView.vue';
@@ -7,6 +6,12 @@ import DeployManagementView from '@/views/DeployManagement/DeployManagementView.
 import AppMainView from '@/views/AppMainView.vue';
 import AppLoginView from '@/views/AppLoginView.vue';
 import AppSignupView from '@/views/AppSignupView.vue';
+import SponsorManagementView from '@/views/SponsorManagement/SponsorManagementView.vue';
+import InsuranceManagementView from '@/views/InsuranceManagement/InsuranceManagementView.vue';
+import InsuranceListTable from '@/components/Insurance/InsuranceListTable.vue';
+import SponsorListTable from '@/components/Sponsor/SponsorListTable.vue';
+import AddInsurance from '@/components/Insurance/AddInsurance.vue';
+import AddSponsor from '@/components/Sponsor/AddSponsor.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,9 +36,38 @@ const router = createRouter({
 			component: AppMainView,
 			children: [
 				{
-					path: 'insurance-sponsor',
-					name: 'Insurance Sponsor',
-					component: InsuranceSponsorManagementView,
+					path: 'insurance',
+					name: 'Insurance',
+					component: InsuranceManagementView,
+					children: [
+						{
+							path: '',
+							name: 'Insurance List',
+							component: InsuranceListTable,
+						},
+						{
+							path: 'add',
+							name: 'Add Insurance',
+							component: AddInsurance,
+						},
+					],
+				},
+				{
+					path: 'sponsor',
+					name: 'Sponsor',
+					component: SponsorManagementView,
+					children: [
+						{
+							path: '',
+							name: 'Sponsor List',
+							component: SponsorListTable,
+						},
+						{
+							path: 'add',
+							name: 'Add Sponsor',
+							component: AddSponsor,
+						},
+					],
 				},
 				{
 					path: 'manager',
