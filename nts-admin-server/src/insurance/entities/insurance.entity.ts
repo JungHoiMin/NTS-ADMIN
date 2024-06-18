@@ -3,7 +3,7 @@ import { CommonEntity } from '../../commons/entities/common.entity';
 
 @Entity({ name: 'insurance' })
 export class InsuranceEntity extends CommonEntity {
-  @Column('char', { length: 2, nullable: false, unique: true })
+  @Column('char', { length: 2, nullable: false })
   code: string;
 
   @Column('varchar', { nullable: false })

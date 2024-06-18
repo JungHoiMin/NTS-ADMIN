@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, reactive, ref } from 'vue';
-import type { InsuranceType } from '@/types/types.insurance';
-import type { FormInstance, FormRules } from 'element-plus';
+import type { InsuranceType, RequestAddInsuranceType } from '@/types/types.insurance';
+import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
 import { emptyCheckRule, lenLimitRule, noWhitespaceRule } from '@/modules/commons/form/form.rules';
 import { validateOnlyEnglish, validateOnlyNumber } from '@/modules/commons/form/form.validates';
-import { PopupMessage } from '@/components/PopupMessage';
+import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { addInsurance } from '@/modules/apis/apis.insurance';
 import { useRouter } from 'vue-router';
 import { loadManagerGroupOptions } from '@/modules/apis/apis.options';
 import type { OptionType } from '@/types/types.options';
 import { useInsuranceStore } from '@/stores/useInsuranceStore';
-import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
 const formRef = ref<FormInstance>();
 
-const formData = reactive<InsuranceType>({
+const formData = reactive<RequestAddInsuranceType>({
 	code: '',
 	name: '',
 	suffix: '',
@@ -47,13 +46,18 @@ const clickAddInsuranceBtn = async (formEl: FormInstance | undefined) => {
 	await formEl.validate((isValid, invalidFields) => {
 		if (isValid) {
 			addInsurance(formData)
-				.then(() => {
-					insuranceStore.addInsurance(formData);
-					// TODO:: 성공메시지
+				.then((data) => {
+					console.log(data);
+					insuranceStore.addInsurance({ idx: data.idx, ...formData });
+					ElNotification({
+						title: '보험사 추가',
+						message: '보헙사가 정상적으로 추가 되었습니다.',
+						type: 'success',
+					});
 					router.push({ name: 'Insurance List' });
 				})
 				.catch((e) => {
-					PopupMessage.alert('보험사 추가 실패', e.message);
+					HmPopupMessage.alert('보험사 추가 실패', e.message);
 				});
 		} else {
 			console.error('보험사 추가 페이지 유효성 검사 실패', invalidFields);
@@ -62,7 +66,7 @@ const clickAddInsuranceBtn = async (formEl: FormInstance | undefined) => {
 };
 
 const clickCancelBtn = () => {
-	PopupMessage.confirm('주의!!!', '확인버튼을 누르면 저장하지 않고 목록으로 돌아갑니다.').then(
+	HmPopupMessage.confirm('주의!!!', '확인버튼을 누르면 저장하지 않고 목록으로 돌아갑니다.').then(
 		() => {
 			router.push({ name: 'Insurance List', replace: true });
 		},

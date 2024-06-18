@@ -14,71 +14,83 @@ export class InsuranceService {
   constructor(private readonly dataSource: DataSource) {}
 
   private logger = new Logger(InsuranceService.name);
-  async findInsurance(allOrOne: 'ALL' | 'ONE', options?: { code?: string }) {
+  async findInsurance(allOrOne: 'ALL' | 'ONE', options?: { idx?: number; code?: number }) {
     const selectBuilder = this.dataSource
       .getRepository(InsuranceEntity)
       .createQueryBuilder()
-      .select(['code', 'name', 'suffix', '"NTSTeamId"'])
+      .select(['idx', 'code', 'name', 'suffix', '"NTSTeamId"'])
       .where('"isUsed" = :isUsed', { isUsed: true });
 
     if (options !== undefined) {
+      if (options.idx !== undefined) selectBuilder.andWhere('idx = :idx', { idx: options.idx });
       if (options.code !== undefined)
         selectBuilder.andWhere('code = :code', { code: options.code });
     }
 
     selectBuilder.addOrderBy('code', 'ASC');
 
-    if (allOrOne === 'ONE' && options && options.code !== undefined) {
+    if (allOrOne === 'ONE' && options !== undefined) {
       const insurance = await selectBuilder.getRawOne();
       if (insurance === undefined)
-        throw CustomNotFoundException(`${options.code}는 등록되지 않은 CODE 입니다.`);
+        throw CustomNotFoundException(`${options.idx}는 등록되지 않은 보험사 입니다.`);
       return insurance;
     } else if (allOrOne === 'ALL') {
       return await selectBuilder.getRawMany();
     }
   }
   async createInsurance(creator: string, createInsuanceDto: CreateInsuranceDto) {
-    try {
+    if (
       await this.dataSource
+        .getRepository(InsuranceEntity)
+        .createQueryBuilder()
+        .where('"isUsed" = :isUsed', { isUsed: true })
+        .andWhere('code = :code', { code: createInsuanceDto.code })
+        .getExists()
+    ) {
+      throw DuplicateException(`${createInsuanceDto.code}는 이미 사용중인 코드입니다.`);
+    }
+
+    try {
+      const insertResult = await this.dataSource
         .createQueryBuilder()
         .insert()
         .into(InsuranceEntity)
-        .values([createInsuanceDto])
+        .values([{ creator, ...createInsuanceDto }])
         .execute();
       this.logger.log(`${creator}님이 ${createInsuanceDto.toString()} 보험사 정보를 등록했습니다.`);
-      return { code: createInsuanceDto.code, name: createInsuanceDto.name };
+      return { idx: insertResult.raw[0].idx };
     } catch (e) {
       if (+e.code === _UNIQUE_VIOLATION) {
         throw DuplicateException(`${createInsuanceDto.code}는 이미 사용중인 코드입니다.`);
       }
     }
   }
-  async updateInsurance(updater: string, code: string, updateInsuanceDto: UpdateInsuranceDto) {
-    const insurance = await this.findInsurance('ONE', { code });
+  async updateInsurance(updater: string, idx: number, updateInsuanceDto: UpdateInsuranceDto) {
+    const insurance = await this.findInsurance('ONE', { idx });
 
     try {
       await this.dataSource
         .createQueryBuilder()
         .update(InsuranceEntity)
         .set({ updater, ...updateInsuanceDto })
-        .where('code = :code', { code })
+        .where('idx = :idx', { idx })
         .execute();
 
       this.logger.log(`${updater}님이 ${insurance.code}번 보험사 정보를 수정했습니다.`);
-      return { code: code };
+      return { idx };
     } catch (e) {
       this.logger.error(e);
     }
   }
-  async deleteInsurance(updater: string, code: string) {
+  async deleteInsurance(updater: string, idx: number) {
     await this.dataSource
       .createQueryBuilder()
       .update(InsuranceEntity)
       .set({ updater, isUsed: false })
-      .where('code = :code', { code })
+      .where('idx = :idx', { idx })
       .execute();
 
-    this.logger.log(`${updater}님이 ${code}번 보험사 정보를 삭제했습니다.`);
-    return { code };
+    this.logger.log(`${updater}님이 ${idx}번 보험사 정보를 삭제했습니다.`);
+    return { idx };
   }
 }

@@ -7,8 +7,8 @@ export const useInsuranceStore = defineStore('insurance', () => {
 
 	const getInsuranceList = computed(() => insuranceList.value);
 
-	const getInsuranceByCode = (code: string) =>
-		insuranceList.value.find((item) => item.code === code) || null;
+	const getInsuranceByIdx = (idx: number) =>
+		insuranceList.value.find((item) => item.idx === idx) || null;
 
 	const addInsurance = (insurance: InsuranceType) => {
 		insuranceList.value.push(insurance);
@@ -19,7 +19,7 @@ export const useInsuranceStore = defineStore('insurance', () => {
 	};
 
 	const editInsurance = (sourceInsurance: InsuranceType) => {
-		const targetInsurance = getInsuranceByCode(sourceInsurance.code);
+		const targetInsurance = getInsuranceByIdx(sourceInsurance.idx);
 		if (targetInsurance === null) return;
 
 		targetInsurance.name = sourceInsurance.name;
@@ -27,5 +27,16 @@ export const useInsuranceStore = defineStore('insurance', () => {
 		targetInsurance.NTSTeamId = sourceInsurance.NTSTeamId;
 	};
 
-	return { getInsuranceByCode, addInsurance, editInsurance, getInsuranceList, setInsuranceList };
+	const removeInsuranceByIdx = (idx: number) => {
+		setInsuranceList(insuranceList.value.filter((item) => item.idx !== idx));
+	};
+
+	return {
+		getInsuranceByIdx,
+		addInsurance,
+		editInsurance,
+		getInsuranceList,
+		setInsuranceList,
+		removeInsuranceByIdx,
+	};
 });
