@@ -3,8 +3,11 @@ import AppSideBar from '@/layouts/AppSideBar.vue';
 import { onMounted } from 'vue';
 import { useInsuranceStore } from '@/stores/useInsuranceStore';
 import { loadInsuranceList } from '@/modules/apis/apis.insurance';
+import { loadManagerGroupOptions } from '@/modules/apis/apis.options';
+import { useOptionsStore } from '@/stores/useOptionsStore';
 
 const insuranceStore = useInsuranceStore();
+const optionsStore = useOptionsStore();
 
 onMounted(() => {
 	loadInsuranceList()
@@ -14,6 +17,9 @@ onMounted(() => {
 		.catch((e) => {
 			console.error(e);
 		});
+	loadManagerGroupOptions('NTS').then((data) => {
+		optionsStore.setManagerGroupOptions(data);
+	});
 });
 </script>
 

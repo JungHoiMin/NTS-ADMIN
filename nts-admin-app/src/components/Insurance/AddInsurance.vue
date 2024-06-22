@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, reactive, ref } from 'vue';
-import type { InsuranceType, RequestAddInsuranceType } from '@/types/types.insurance';
+import { reactive, ref } from 'vue';
+import type { RequestAddInsuranceType } from '@/types/types.insurance';
 import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
 import { emptyCheckRule, lenLimitRule, noWhitespaceRule } from '@/modules/commons/form/form.rules';
 import { validateOnlyEnglish, validateOnlyNumber } from '@/modules/commons/form/form.validates';
 import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { addInsurance } from '@/modules/apis/apis.insurance';
 import { useRouter } from 'vue-router';
-import { loadManagerGroupOptions } from '@/modules/apis/apis.options';
-import type { OptionType } from '@/types/types.options';
 import { useInsuranceStore } from '@/stores/useInsuranceStore';
+import { useOptionsStore } from '@/stores/useOptionsStore';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
+const optionsStore = useOptionsStore();
+const { getNtsManagerGroupOptions } = storeToRefs(optionsStore);
 const formRef = ref<FormInstance>();
 
 const formData = reactive<RequestAddInsuranceType>({
@@ -22,10 +24,6 @@ const formData = reactive<RequestAddInsuranceType>({
 	NTSTeamId: -1,
 });
 
-const NTSTeamOptionsData = ref<OptionType[]>([]);
-const NTSTeamOptions = computed(() => {
-	return [{ key: -1, value: '지정안함' }, ...NTSTeamOptionsData.value];
-});
 const rules = reactive<FormRules<typeof formData>>({
 	code: [
 		emptyCheckRule(),
@@ -75,12 +73,6 @@ const clickCancelBtn = () => {
 const keyDownAddInsruanceForm = (ev: KeyboardEvent) => {
 	if (ev.key === 'Enter' || ev.key === 'NumpadEnter') clickAddInsuranceBtn(formRef.value);
 };
-
-onBeforeMount(() => {
-	loadManagerGroupOptions('NTS').then((data) => {
-		NTSTeamOptionsData.value = data;
-	});
-});
 </script>
 
 <template>
@@ -110,7 +102,7 @@ onBeforeMount(() => {
 		<el-form-item label="NTS 담당자">
 			<el-select v-model="formData.NTSTeamId" placeholder="선택">
 				<el-option
-					v-for="{ key, value } in NTSTeamOptions"
+					v-for="{ key, value } in getNtsManagerGroupOptions"
 					:key="key"
 					:label="value"
 					:value="key"

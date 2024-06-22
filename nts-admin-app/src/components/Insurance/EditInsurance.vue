@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, reactive, ref, defineProps } from 'vue';
+import { onBeforeMount, reactive, ref, defineProps } from 'vue';
 import type { RequestUpdateInsuranceType } from '@/types/types.insurance';
 import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
 import { emptyCheckRule, noWhitespaceRule } from '@/modules/commons/form/form.rules';
 import { validateOnlyEnglish } from '@/modules/commons/form/form.validates';
 import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { useRouter } from 'vue-router';
-import { loadManagerGroupOptions } from '@/modules/apis/apis.options';
-import type { OptionType } from '@/types/types.options';
 import { useInsuranceStore } from '@/stores/useInsuranceStore';
 import { editInsurance } from '@/modules/apis/apis.insurance';
+import { useOptionsStore } from '@/stores/useOptionsStore';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
+const optionsStore = useOptionsStore();
+const { getNtsManagerGroupOptions } = storeToRefs(optionsStore);
 const formRef = ref<FormInstance>();
 
 const props = defineProps({
@@ -30,10 +32,6 @@ const formData = reactive<RequestUpdateInsuranceType>({
 	NTSTeamId: -1,
 });
 
-const NTSTeamOptionsData = ref<OptionType[]>([]);
-const NTSTeamOptions = computed(() => {
-	return [{ key: -1, value: '지정안함' }, ...NTSTeamOptionsData.value];
-});
 const rules = reactive<FormRules<typeof formData>>({
 	name: [emptyCheckRule()],
 	suffix: [
@@ -79,10 +77,6 @@ const keyDownAddInsruanceForm = (ev: KeyboardEvent) => {
 };
 
 onBeforeMount(async () => {
-	loadManagerGroupOptions('NTS').then((data) => {
-		NTSTeamOptionsData.value = data;
-	});
-
 	const insurance = insuranceStore.getInsuranceByIdx(+props.idx);
 	if (insurance === null) {
 		await HmPopupMessage.alert('오류', '잘못된 접근입니다.\n보험사 정보 목록으로 돌아갑니다.');
@@ -123,7 +117,7 @@ onBeforeMount(async () => {
 		<el-form-item label="NTS 담당자">
 			<el-select v-model="formData.NTSTeamId" placeholder="선택">
 				<el-option
-					v-for="{ key, value } in NTSTeamOptions"
+					v-for="{ key, value } in getNtsManagerGroupOptions"
 					:key="key"
 					:label="value"
 					:value="key"
