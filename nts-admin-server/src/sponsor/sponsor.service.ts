@@ -22,7 +22,7 @@ export class SponsorService {
       .where('"isUsed" = :isUsed', { isUsed: true });
 
     if (options !== undefined) {
-      if (options.idx !== undefined) selectBuilder.andWhere('idx = :idx', { code: options.idx });
+      if (options.idx !== undefined) selectBuilder.andWhere('idx = :idx', { idx: options.idx });
     }
 
     selectBuilder.addOrderBy('name', 'ASC');
@@ -37,6 +37,17 @@ export class SponsorService {
     }
   }
   async createSponsor(creator: string, createSponsorDto: CreateSponsorDto) {
+    if (
+      await this.dataSource
+        .getRepository(SponsorEntity)
+        .createQueryBuilder()
+        .where('"isUsed" = :isUsed', { isUsed: true })
+        .andWhere('name = :name', { name: createSponsorDto.name })
+        .getExists()
+    ) {
+      throw DuplicateException(`${createSponsorDto.name}은 이미 사용중인 이름입니다.`);
+    }
+
     try {
       const insertResult = await this.dataSource
         .createQueryBuilder()
@@ -45,7 +56,7 @@ export class SponsorService {
         .values([createSponsorDto])
         .execute();
       this.logger.log(`${creator}님이 ${createSponsorDto.name} 스폰서사 정보를 등록했습니다.`);
-      return { idx: insertResult.raw['idx'], name: createSponsorDto.name };
+      return { idx: insertResult.raw[0].idx };
     } catch (e) {
       if (+e.code === _UNIQUE_VIOLATION) {
         throw DuplicateException(`${createSponsorDto.name}는 이미 등록된 스폰서사 입니다.`);
@@ -60,7 +71,7 @@ export class SponsorService {
         .createQueryBuilder()
         .update(SponsorEntity)
         .set({ updater, ...updateSponsorDto })
-        .where('code = :code', { idx })
+        .where('idx = :idx', { idx })
         .execute();
 
       this.logger.log(`${updater}님이 ${sponsor.idx}번 스폰서사 정보를 수정했습니다.`);

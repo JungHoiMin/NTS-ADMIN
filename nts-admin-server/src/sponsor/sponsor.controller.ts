@@ -31,7 +31,7 @@ export class SponsorController {
   })
   @ApiBearerAuth('access-token')
   async getAllSponsor(@Req() req: Request) {
-    this.logger.log(`${req['user'].id}님이 보험사 리스트를 조회함`);
+    this.logger.log(`${req['user'].id}님이 스폰서사 리스트를 조회함`);
     return await this.sponsorService.findSponsor('ALL');
   }
 
@@ -44,7 +44,7 @@ export class SponsorController {
   @ApiParam({ name: 'idx', description: '스폰서사 코드', required: true })
   @ApiBearerAuth('access-token')
   async getSponsorByCode(@Req() req: Request, @Param('idx') idx: string) {
-    this.logger.log(`${req['user'].id}님이 ${idx}코드로 보험사 정보를 조회함`);
+    this.logger.log(`${req['user'].id}님이 ${idx}코드로 스폰서사사 정보를 조회함`);
     return await this.sponsorService.findSponsor('ONE', { idx });
   }
 
