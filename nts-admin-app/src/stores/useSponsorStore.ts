@@ -1,13 +1,13 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import type { SponsorType } from '@/types/types.sponsor';
+import type { RequestUpdateSponsorType, SponsorType } from '@/types/types.sponsor';
 
 export const useSponsorStore = defineStore('sponsor', () => {
 	const sponsorList = ref<SponsorType[]>([]);
 
 	const getSponsorList = computed(() => sponsorList.value);
 
-	const getSponsorByCode = (idx: number) =>
+	const getSponsorByIdx = (idx: number) =>
 		sponsorList.value.find((item) => item.idx === idx) || null;
 
 	const addSponsor = (sponsor: SponsorType) => {
@@ -18,13 +18,23 @@ export const useSponsorStore = defineStore('sponsor', () => {
 		sponsorList.value = newSponsorList;
 	};
 
-	const editSponsor = (sourceSponsor: SponsorType) => {
-		const targetSponsor = getSponsorByCode(sourceSponsor.idx);
+	const editSponsor = (idx: number, sourceSponsor: RequestUpdateSponsorType) => {
+		const targetSponsor = getSponsorByIdx(idx);
 		if (targetSponsor === null) return;
 
-		targetSponsor.name = sourceSponsor.name;
 		targetSponsor.suffix = sourceSponsor.suffix;
 	};
 
-	return { getSponsorByCode, addSponsor, editSponsor, getSponsorList, setSponsorList };
+	const removeSponsorByIdx = (idx: number) => {
+		setSponsorList(sponsorList.value.filter((item) => item.idx !== idx));
+	};
+
+	return {
+		getSponsorByIdx,
+		addSponsor,
+		editSponsor,
+		getSponsorList,
+		setSponsorList,
+		removeSponsorByIdx,
+	};
 });

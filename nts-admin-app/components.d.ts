@@ -11,6 +11,7 @@ declare module 'vue' {
     AddSponsor: typeof import('./src/components/Sponsor/AddSponsor.vue')['default']
     AppTable: typeof import('./src/components/AppTable.vue')['default']
     EditInsurance: typeof import('./src/components/Insurance/EditInsurance.vue')['default']
+    EditSponsor: typeof import('./src/components/Sponsor/EditSponsor.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
