@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import type { InsuranceType } from '@/types/types.insurance';
+import type { InsuranceType, RequestUpdateInsuranceType } from '@/types/types.insurance';
 
 export const useInsuranceStore = defineStore('insurance', () => {
 	const insuranceList = ref<InsuranceType[]>([]);
@@ -18,8 +18,8 @@ export const useInsuranceStore = defineStore('insurance', () => {
 		insuranceList.value = newInsuranceList;
 	};
 
-	const editInsurance = (sourceInsurance: InsuranceType) => {
-		const targetInsurance = getInsuranceByIdx(sourceInsurance.idx);
+	const editInsurance = (idx: number, sourceInsurance: RequestUpdateInsuranceType) => {
+		const targetInsurance = getInsuranceByIdx(idx);
 		if (targetInsurance === null) return;
 
 		targetInsurance.name = sourceInsurance.name;

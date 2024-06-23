@@ -47,7 +47,7 @@ const clickEditInsuranceBtn = async (formEl: FormInstance | undefined) => {
 		if (isValid) {
 			editInsurance(+props.idx, formData)
 				.then(() => {
-					insuranceStore.editInsurance({ idx: +props.idx, code: code.value, ...formData });
+					insuranceStore.editInsurance(+props.idx, { ...formData });
 					ElNotification({
 						title: '보험사 수정',
 						message: '보헙사가 정상적으로 수정 되었습니다.',
