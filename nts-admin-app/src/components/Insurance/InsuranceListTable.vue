@@ -6,15 +6,30 @@ import { useRouter } from 'vue-router';
 import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { deleteInsurance } from '@/modules/apis/apis.insurance';
 import { ElNotification } from 'element-plus';
+import { computed } from 'vue';
+import { useOptionsStore } from '@/stores/useOptionsStore';
 
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
 const { getInsuranceList } = storeToRefs(insuranceStore);
+const optionsStore = useOptionsStore();
+const { getNtsManagerGroupOptions } = storeToRefs(optionsStore);
+const insuranceList = computed(() =>
+	getInsuranceList.value.map((insurnaceData) => {
+		const { NTSTeamId, ...data } = insurnaceData;
+		const NTSTeam = getNtsManagerGroupOptions.value.find((teamInfo) => teamInfo.key === NTSTeamId);
+		const NTSTeamName = NTSTeam !== undefined ? NTSTeam.value : '알수없음';
+		return {
+			...data,
+			NTSTeamName,
+		};
+	}),
+);
 const insuranceColumnsList = [
 	{ prop: 'code', label: '보험사 코드', width: 120 },
 	{ prop: 'name', label: '보험사 명', width: 200 },
 	{ prop: 'suffix', label: '접미사(영문)', width: 200 },
-	{ prop: 'NTSTeamId', label: 'NTS 담당자', width: 300 },
+	{ prop: 'NTSTeamName', label: 'NTS 담당자', width: 300 },
 ];
 
 const clickAddInsuranceBtn = () => {
@@ -45,8 +60,9 @@ const clickDeleteInsuranceBtn = (idx: number) => {
 <template>
 	<AppTable
 		v-model:column-list="insuranceColumnsList"
-		v-model:table-data="getInsuranceList"
+		v-model:table-data="insuranceList"
 		:search-key-list="['code', 'name']"
+		search-hint="보험사 코드 or 보험사 명"
 		key-name="idx"
 		@addItem="clickAddInsuranceBtn"
 		@editItem="clickEditInsuranceBtn"
