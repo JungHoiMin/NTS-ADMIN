@@ -27,6 +27,9 @@ const props = defineProps({
 	searchKeyList: {
 		type: Array as PropType<string[]>,
 	},
+	searchHint: {
+		type: String,
+	},
 });
 defineEmits(['addItem', 'editItem', 'deleteItem']);
 
@@ -40,7 +43,7 @@ const cellClassName = (data: { row: any; column: any; rowIndex: number; columnIn
 <template>
 	<el-row :gutter="20" justify="space-between">
 		<el-col :span="20" v-if="searchKeyList && searchKeyList.length > 0">
-			<el-input placeholder="보험사 코드 or 보험사 명" v-model="searchText" />
+			<el-input :placeholder="props.searchHint" v-model="searchText" />
 		</el-col>
 		<el-col :span="searchKeyList && searchKeyList.length > 0 ? 4 : 24" style="text-align: right">
 			<el-button @click="$emit('addItem')" type="primary">추가하기</el-button>
