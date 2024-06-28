@@ -102,7 +102,18 @@ export class ManagerService {
   }
 
   async updateManager(updater: string, id: string, updateManagerDto: UpdateManagerDto) {
-    const manager = await this.findManager('ONE', { id });
+    const manager = await this.dataSource
+      .getRepository(ManagerEntity)
+      .createQueryBuilder()
+      .where('"isUsed" = :isUsed', { isUsed: true })
+      .andWhere('id = :id', { id })
+      .getOne();
+
+    const { prevPw, ...rest } = updateManagerDto;
+    console.log(prevPw, manager.pw);
+    if (!(await bcrypt.compare(prevPw, manager.pw))) {
+      throw WrongPasswordException();
+    }
 
     try {
       if (manager.teamType === 'NTS') {
