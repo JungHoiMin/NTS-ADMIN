@@ -17,7 +17,7 @@ export class CreateManagerDto {
   teamId: number;
 
   @ApiProperty()
-  joinDate?: Date;
+  joinDate?: Date | null;
 }
 
 export class LoginManagerDto extends PickType(CreateManagerDto, ['id', 'pw'] as const) {}

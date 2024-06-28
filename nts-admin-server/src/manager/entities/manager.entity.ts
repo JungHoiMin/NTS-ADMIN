@@ -19,7 +19,7 @@ export class ManagerEntity extends CommonEntity {
   teamId: number;
 
   @Column({
-    type: 'date',
+    type: 'timestamp',
     nullable: true,
   })
   joinDate: Date;
