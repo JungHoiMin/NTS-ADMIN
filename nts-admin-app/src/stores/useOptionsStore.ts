@@ -3,24 +3,26 @@ import type { OptionType } from '@/types/types.options';
 import { computed, ref } from 'vue';
 
 export const useOptionsStore = defineStore('options', () => {
-	const ntsManagerGroupOptions = ref<OptionType[]>([]);
+	const ntsTeamMemberOptions = ref<OptionType[]>([]);
 
-	const getNtsManagerGroupOptions = computed(() => [
+	const getNtsTeamMemberOptions = computed<OptionType[]>(() => [
 		{ key: -1, value: '지정안함' },
-		...ntsManagerGroupOptions.value,
+		...ntsTeamMemberOptions.value,
 	]);
-	const getNtsManagerGroupOptionsForSearch = computed(() => [
+	const getNtsTeamMemberOptionsForSearch = computed<OptionType[]>(() => [
 		{ key: -1, value: '전체' },
-		...ntsManagerGroupOptions.value,
+		...ntsTeamMemberOptions.value,
+	]);
 	]);
 
-	const setManagerGroupOptions = (newNtsManagerGroupOptions: OptionType[]) => {
-		ntsManagerGroupOptions.value = newNtsManagerGroupOptions;
+	const setNtsTeamMemberOptions = (newNtsManagerGroupOptions: OptionType[]) => {
+		ntsTeamMemberOptions.value = newNtsManagerGroupOptions;
+	};
 	};
 
 	return {
-		getNtsManagerGroupOptions,
-		getNtsManagerGroupOptionsForSearch,
-		setManagerGroupOptions,
+		getNtsTeamMemberOptions,
+		getNtsTeamMemberOptionsForSearch,
+		setNtsTeamMemberOptions,
 	};
 });
