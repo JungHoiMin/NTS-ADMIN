@@ -8,6 +8,7 @@ import { useRouter } from 'vue-router';
 import { secureLocalStorage, secureSessionStorage } from '@/modules/storages';
 import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { validateEmpty } from '@/modules/commons/form/form.validates';
+import { emailRule } from '@/modules/commons/form/form.rules';
 
 const router = useRouter();
 
@@ -21,7 +22,7 @@ const formData = reactive<RequestLoginType>({
 });
 
 const rules = reactive<FormRules<typeof formData>>({
-	id: [{ validator: validateEmpty, trigger: 'blur' }],
+	id: [emailRule()],
 	pw: [{ validator: validateEmpty, trigger: 'blur' }],
 });
 
