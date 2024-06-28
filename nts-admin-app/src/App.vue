@@ -9,6 +9,7 @@ import { RouterView } from 'vue-router';
 <style lang="scss">
 @import '@/assets/css/hm.popup-message';
 @import '@/assets/css/custom.element-plus';
+@import '@/assets/css/commons.scss';
 html,
 body,
 main,

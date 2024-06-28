@@ -93,8 +93,4 @@ const keyDownAddSponsorForm = (ev: KeyboardEvent) => {
 	</el-form>
 </template>
 
-<style scoped>
-.add-form {
-	max-width: 600px;
-}
-</style>
+<style scoped></style>
