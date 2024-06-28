@@ -20,8 +20,8 @@ const goPageByName = (name: string, replace: boolean = true) => {
 					<template #title>스폰서사 관리</template>
 				</el-menu-item>
 
-				<el-menu-item index="3" @click="goPageByName('Manager')">
-					<template #title>담당자 정보 관리</template>
+				<el-menu-item index="3" @click="goPageByName('Agent Manager List')">
+					<template #title>AM 관리</template>
 				</el-menu-item>
 
 				<el-menu-item index="4" @click="goPageByName('Call Center')">

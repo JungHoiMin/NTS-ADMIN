@@ -4,7 +4,7 @@ import {
 	type NavigationGuardNext,
 	type RouteLocationNormalized,
 } from 'vue-router';
-import ManagerManagementView from '@/views/ManagerManagement/ManagerManagementView.vue';
+import ManagerManagementView from '@/views/AgentManagerManagement/AgentManagerManagementView.vue';
 import CallCenterInfoManagementView from '@/views/CallCenterInfoManagement/CallCenterInfoManagementView.vue';
 import NTSAppManagementView from '@/views/NTSAppManagement/NTSAppManagementView.vue';
 import DeployManagementView from '@/views/DeployManagement/DeployManagementView.vue';
@@ -21,6 +21,9 @@ import { secureSessionStorage } from '@/modules/storages';
 import { setAuthorizationToken } from '@/modules/apis';
 import EditInsurance from '@/components/Insurance/EditInsurance.vue';
 import EditSponsor from '@/components/Sponsor/EditSponsor.vue';
+import AgentManagerListTable from '@/components/AgentManager/AgentManagerListTable.vue';
+import AddManager from '@/components/Manager/AddManager.vue';
+import EditManager from '@/components/Manager/EditManager.vue';
 
 const checkAuth =
 	() => (from: RouteLocationNormalized, to: RouteLocationNormalized, next: NavigationGuardNext) => {
@@ -102,9 +105,33 @@ const router = createRouter({
 					],
 				},
 				{
-					path: 'manager',
-					name: 'Manager',
+					path: 'agent-manager',
+					name: 'Agent Manager',
 					component: ManagerManagementView,
+					children: [
+						{
+							path: '',
+							name: 'Agent Manager List',
+							component: AgentManagerListTable,
+						},
+						{
+							path: 'add',
+							name: 'Add Agent Manager',
+							component: AddManager,
+							props: {
+								teamType: 'AM',
+							},
+						},
+						{
+							path: 'edit/:id',
+							name: 'Edit Agent Manager',
+							component: EditManager,
+							props: (route) => ({
+								teamType: 'AM',
+								id: route.params.id,
+							}),
+						},
+					],
 				},
 				{
 					path: 'call-center',
