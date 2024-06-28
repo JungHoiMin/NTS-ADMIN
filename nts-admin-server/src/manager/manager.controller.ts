@@ -72,6 +72,17 @@ export class ManagerController {
     return await this.managerService.getTeamMemberByTeamType({ teamType });
   }
 
+  @Get('options/teamId/:teamType')
+  @ApiOperation({
+    summary: '팀 종류에 따른 팀 아이디 리스트를 조회(팀구분)',
+    description: '팀 구분을 파라미터로 받아 팀 아이디 리스트를 반환함',
+  })
+  @ApiParam({ name: 'teamType', description: '팀 구분', required: true, enum: ['NTS', 'AM'] })
+  async getTeamIdByTeamType(@Param('teamType') teamType: 'NTS' | 'AM'): Promise<OptionType[]> {
+    this.logger.log(`${teamType}으로 팀 아이디 리스트를 조회함`);
+    return await this.managerService.getTeamIdByTeamType({ teamType });
+  }
+
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({

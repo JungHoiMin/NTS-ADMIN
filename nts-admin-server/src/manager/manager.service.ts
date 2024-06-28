@@ -68,6 +68,18 @@ export class ManagerService {
       .getRawMany();
   }
 
+  async getTeamIdByTeamType(options: { teamType: 'NTS' | 'AM' }): Promise<OptionType[]> {
+    return this.dataSource
+      .getRepository(ManagerEntity)
+      .createQueryBuilder()
+      .select(['"teamId" as key', `Concat('${options.teamType} ', "teamId", ' 파트') as value`])
+      .where('"isUsed" = :isUsed', { isUsed: true })
+      .andWhere('"teamType" = :teamType', { teamType: options.teamType })
+      .addGroupBy('"teamId"')
+      .having('"teamId" <> :teamId', { teamId: -1 })
+      .getRawMany();
+  }
+
   async createManager(createManagerDto: CreateManagerDto) {
     try {
       const { pw, ...data } = createManagerDto;
