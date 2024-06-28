@@ -29,7 +29,7 @@ export const validateOnlyEnglish = (
 	value: Value,
 	callback: (error?: string | Error) => void,
 ) => {
-	if (value.match(/^[a-z,A-Z]*$/)) {
+	if (value.match(/^[a-zA-Z]*$/)) {
 		callback();
 	} else {
 		callback(new Error('영어만 입력할 수 있습니다.'));

@@ -13,11 +13,11 @@ const router = useRouter();
 const insuranceStore = useInsuranceStore();
 const { getInsuranceList } = storeToRefs(insuranceStore);
 const optionsStore = useOptionsStore();
-const { getNtsManagerGroupOptions } = storeToRefs(optionsStore);
+const { getNtsTeamMemberOptions } = storeToRefs(optionsStore);
 const insuranceList = computed(() =>
 	getInsuranceList.value.map((insurnaceData) => {
 		const { NTSTeamId, ...data } = insurnaceData;
-		const NTSTeam = getNtsManagerGroupOptions.value.find((teamInfo) => teamInfo.key === NTSTeamId);
+		const NTSTeam = getNtsTeamMemberOptions.value.find((teamInfo) => teamInfo.key === NTSTeamId);
 		const NTSTeamName = NTSTeam !== undefined ? NTSTeam.value : '알수없음';
 		return {
 			...data,

@@ -1,10 +1,9 @@
-// team/:teamType/group
 import axiosInstance, { getAxiosError } from '@/modules/apis/index';
 import type { OptionType } from '@/types/types.options';
 
-export const loadManagerGroupOptions = async <T = OptionType[]>(teamType: 'NTS' | 'AM') => {
+export const loadTeamMemberOptions = async <T = OptionType[]>(teamType: 'NTS') => {
 	try {
-		const response = await axiosInstance.get<T>(`manager/team/${teamType}/group`);
+		const response = await axiosInstance.get<T>(`manager/options/teamMember/${teamType}`);
 		return response.data;
 	} catch (e) {
 		throw getAxiosError(e);

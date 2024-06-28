@@ -14,7 +14,7 @@ import { storeToRefs } from 'pinia';
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
 const optionsStore = useOptionsStore();
-const { getNtsManagerGroupOptions } = storeToRefs(optionsStore);
+const { getNtsTeamMemberOptions } = storeToRefs(optionsStore);
 const formRef = ref<FormInstance>();
 
 const props = defineProps({
@@ -117,7 +117,7 @@ onBeforeMount(async () => {
 		<el-form-item label="NTS 담당자">
 			<el-select v-model="formData.NTSTeamId" placeholder="선택">
 				<el-option
-					v-for="{ key, value } in getNtsManagerGroupOptions"
+					v-for="{ key, value } in getNtsTeamMemberOptions"
 					:key="key"
 					:label="value"
 					:value="key"
@@ -134,8 +134,4 @@ onBeforeMount(async () => {
 	</el-form>
 </template>
 
-<style scoped>
-.add-form {
-	max-width: 600px;
-}
-</style>
+<style scoped></style>

@@ -11,6 +11,7 @@ import {
 import { _UNIQUE_VIOLATION } from '../commons/exception/error-code';
 import { AuthService } from '../auth/auth.service';
 import { UpdateManagerDto } from './dto/put-manager.dto';
+import { OptionType } from '../commons/types/commons';
 
 @Injectable()
 export class ManagerService {
@@ -56,7 +57,7 @@ export class ManagerService {
     }
   }
 
-  async findManagerGroupByTeamType(options: { teamType: string }) {
+  async getTeamMemberByTeamType(options: { teamType: string }): Promise<OptionType[]> {
     return this.dataSource
       .getRepository(ManagerEntity)
       .createQueryBuilder()
@@ -93,21 +94,21 @@ export class ManagerService {
 
     try {
       if (manager.teamType === 'NTS') {
-        if (updateManagerDto.pw !== undefined) {
+        if (rest.pw !== undefined) {
           const salt = await bcrypt.genSalt();
-          updateManagerDto.pw = await bcrypt.hash(updateManagerDto.pw, salt);
+          rest.pw = await bcrypt.hash(rest.pw, salt);
         }
       }
 
       await this.dataSource
         .createQueryBuilder()
         .update(ManagerEntity)
-        .set({ updater, ...updateManagerDto })
+        .set({ updater, ...rest })
         .where('id = :id', { id })
         .execute();
 
       this.logger.log(`${manager.id}님의 정보가 수정되었습니다.`);
-      return { id: id, name: updateManagerDto.name };
+      return { id: id, name: rest.name };
     } catch (e) {
       this.logger.error(e);
     }
