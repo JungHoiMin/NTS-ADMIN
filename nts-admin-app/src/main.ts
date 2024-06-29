@@ -3,14 +3,17 @@ import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-
+import 'element-plus/theme-chalk/dark/css-vars.css';
+import piniaPluginPersist from 'pinia-plugin-persistedstate';
 import App from './App.vue';
 import router from './router';
 
 const app = createApp(App);
 
+const pinia = createPinia();
+pinia.use(piniaPluginPersist);
 app.use(ElementPlus);
-app.use(createPinia());
+app.use(pinia);
 app.use(router);
 
 app.mount('#app');
