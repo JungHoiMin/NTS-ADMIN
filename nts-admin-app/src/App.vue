@@ -4,13 +4,16 @@ import { onBeforeMount } from 'vue';
 import { loadTeamIdOptions } from '@/modules/apis/apis.options';
 import { useOptionsStore } from '@/stores/useOptionsStore';
 import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSettingStore';
+import { storeToRefs } from 'pinia';
 
 const optionsStore = useOptionsStore();
 const personalOptionsSettingStore = usePersonalOptionsSettingStore();
+const { getTheme } = storeToRefs(personalOptionsSettingStore);
+const { setTheme } = personalOptionsSettingStore;
 
 onBeforeMount(async () => {
 	await Promise.all([
-		personalOptionsSettingStore.setTheme(personalOptionsSettingStore.getTheme),
+		setTheme(getTheme.value),
 		loadTeamIdOptions('NTS')
 			.then((data) => optionsStore.setNtsTeamIdOptions(data))
 			.catch((e) => console.error(e)),
