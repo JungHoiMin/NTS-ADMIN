@@ -1,1 +1,1 @@
-export type OptionType = { key: number; value: string };
+export type OptionType = { key: number | string; value: string };
