@@ -7,18 +7,15 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AddAgentManager: typeof import('./src/components/AgentManager/AddAgentManager.vue')['default']
     AddInsurance: typeof import('./src/components/Insurance/AddInsurance.vue')['default']
     AddManager: typeof import('./src/components/Manager/AddManager.vue')['default']
     AddSponsor: typeof import('./src/components/Sponsor/AddSponsor.vue')['default']
     AgentManagerListTable: typeof import('./src/components/AgentManager/AgentManagerListTable.vue')['default']
     AppTable: typeof import('./src/components/AppTable.vue')['default']
-    EditAgentManager: typeof import('./src/components/AgentManager/EditAgentManager.vue')['default']
     EditInsurance: typeof import('./src/components/Insurance/EditInsurance.vue')['default']
     EditManager: typeof import('./src/components/Manager/EditManager.vue')['default']
     EditSponsor: typeof import('./src/components/Sponsor/EditSponsor.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
-    ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
@@ -42,7 +39,6 @@ declare module 'vue' {
     ElText: typeof import('element-plus/es')['ElText']
     InsuranceListTable: typeof import('./src/components/Insurance/InsuranceListTable.vue')['default']
     ManagerAvatar: typeof import('./src/components/ManagerAvatar.vue')['default']
-    ManagerListTable: typeof import('./src/components/AgentManager/ManagerListTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SponsorListTable: typeof import('./src/components/Sponsor/SponsorListTable.vue')['default']
