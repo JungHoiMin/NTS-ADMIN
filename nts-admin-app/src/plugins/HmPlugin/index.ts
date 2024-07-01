@@ -1,6 +1,5 @@
 import type { App } from 'vue';
 import { HmPlus } from '@/plugins/HmPlugin/HmPlus';
-import type { Pinia } from 'pinia';
 
 const createHmContainer = () => {
 	const htmlEl = document.querySelector('body') as HTMLElement;
@@ -22,6 +21,7 @@ export default (app: App) => {
 	createHmContainer();
 
 	createContainerInHmContainer('hm-popup-container');
+	createContainerInHmContainer('hm-notification-container');
 
 	app.provide('HmPlus', new HmPlus());
 };

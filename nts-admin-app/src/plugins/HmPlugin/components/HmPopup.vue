@@ -2,7 +2,7 @@
 import { defineEmits, defineProps, ref } from 'vue';
 
 const props = defineProps<{
-	type: 'Prompt' | 'Alert' | 'Confirm';
+	type: 'prompt' | 'alert' | 'confirm';
 	title: string;
 	message?: string;
 	okBtnName?: string;
@@ -21,7 +21,7 @@ const cancel = () => emits('cancel');
 	<div class="popup-bg">
 		<div class="popup-box">
 			<h3 class="popup-title">{{ props.title }}</h3>
-			<div class="popup-body" v-if="props.type !== 'Prompt'" v-html="props.message" />
+			<div class="popup-body" v-if="props.type !== 'prompt'" v-html="props.message" />
 			<div class="popup-body" v-else>
 				<el-input v-model="inputText">
 					<template #prepend v-if="props.message">{{ props.message }}</template>
@@ -31,7 +31,7 @@ const cancel = () => emits('cancel');
 				<el-button type="primary" @click="confirm">
 					{{ props.okBtnName ? props.okBtnName : '확인' }}
 				</el-button>
-				<el-button v-if="props.type !== 'Alert'" type="danger" @click="cancel">
+				<el-button v-if="props.type !== 'alert'" type="danger" @click="cancel">
 					{{ props.okBtnName ? props.cancelBtnName : '취소' }}
 				</el-button>
 			</div>
