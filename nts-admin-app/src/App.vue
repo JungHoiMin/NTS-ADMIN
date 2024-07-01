@@ -20,9 +20,9 @@ onBeforeMount(async () => {
 </template>
 
 <style lang="scss">
-@import '@/assets/css/hm.popup-message';
+@import '@/assets/css/hm.plus';
 @import '@/assets/css/custom.element-plus';
-@import '@/assets/css/commons.scss';
+@import '@/assets/css/commons';
 html,
 body,
 main,
