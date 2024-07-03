@@ -6,7 +6,7 @@ import {
 	usePersonalOptionsSettingStore,
 } from '@/stores/usePersonalOptionsSettingStore';
 import { storeToRefs } from 'pinia';
-import { HmPopupMessage } from '@/components/HmPopupMessage';
+import {HmPopup} from "@/plugins/HmPlus";
 
 const isShowDialog = defineModel<boolean>({ required: true });
 
@@ -110,8 +110,8 @@ const setClearOptions = () => {
 
 const close = () => {
 	if (isActiveSaveBtn.value) {
-		HmPopupMessage.confirm('저장 취소', '확인을 누르시면 수정하신 내용이 반영되지 않습니다.', {
-			confirmBtnName: '확인',
+		HmPopup('confirm', '저장 취소', '확인을 누르시면 수정하신 내용이 반영되지 않습니다.', {
+			okBtnName: '확인',
 			cancelBtnName: '돌아가기',
 		}).then(() => (isShowDialog.value = false));
 	} else {
