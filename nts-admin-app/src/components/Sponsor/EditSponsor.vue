@@ -8,9 +8,14 @@ import { useSponsorStore } from '@/stores/useSponsorStore';
 import type { RequestUpdateSponsorType } from '@/types/types.sponsor';
 import { editSponsor } from '@/modules/apis/apis.sponsor';
 import { HmNotification, HmPopup } from '@/plugins/HmPlus';
+import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSettingStore';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const sponsorStore = useSponsorStore();
+const personalOptionsSettingStore = usePersonalOptionsSettingStore();
+const { getSize } = storeToRefs(personalOptionsSettingStore);
+
 const formRef = ref<FormInstance>();
 
 const props = defineProps({
@@ -84,6 +89,7 @@ onBeforeMount(async () => {
 	<el-form
 		ref="formRef"
 		class="add-form"
+		:size="getSize"
 		:model="formData"
 		label-position="right"
 		label-width="auto"

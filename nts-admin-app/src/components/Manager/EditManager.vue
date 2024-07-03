@@ -10,6 +10,7 @@ import { storeToRefs } from 'pinia';
 import type { OptionType } from '@/types/types.options';
 import { loadTeamMemberOptions } from '@/modules/apis/apis.options';
 import { HmNotification, HmPopup } from '@/plugins/HmPlus';
+import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSettingStore';
 
 const props = defineProps<{
 	id: string;
@@ -20,6 +21,8 @@ const nextRouterName = props.teamType === 'NTS' ? 'NTS Admin' : 'Agent Manager L
 const router = useRouter();
 const optionsStore = useOptionsStore();
 const { getAmTeamIdOptions, getNtsTeamIdOptions } = storeToRefs(optionsStore);
+const personalOptionsSettingStore = usePersonalOptionsSettingStore();
+const { getSize } = storeToRefs(personalOptionsSettingStore);
 
 const addedOptions = ref<OptionType[]>([]);
 const formRef = ref<FormInstance>();
@@ -130,6 +133,7 @@ onBeforeUnmount(async () => {
 	<el-form
 		ref="formRef"
 		class="add-form"
+		:size="getSize"
 		:model="formData"
 		label-position="right"
 		label-width="auto"

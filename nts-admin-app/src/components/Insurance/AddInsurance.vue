@@ -10,11 +10,15 @@ import { useInsuranceStore } from '@/stores/useInsuranceStore';
 import { useOptionsStore } from '@/stores/useOptionsStore';
 import { storeToRefs } from 'pinia';
 import { HmNotification, HmPopup } from '@/plugins/HmPlus';
+import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSettingStore';
 
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
 const optionsStore = useOptionsStore();
 const { getNtsTeamMemberOptions } = storeToRefs(optionsStore);
+const personalOptionsSettingStore = usePersonalOptionsSettingStore();
+const { getSize } = storeToRefs(personalOptionsSettingStore);
+
 const formRef = ref<FormInstance>();
 
 const formData = reactive<RequestAddInsuranceType>({
@@ -78,6 +82,7 @@ const keyDownAddInsruanceForm = (ev: KeyboardEvent) => {
 	<el-form
 		ref="formRef"
 		class="add-form"
+		:size="getSize"
 		:model="formData"
 		label-position="right"
 		label-width="auto"

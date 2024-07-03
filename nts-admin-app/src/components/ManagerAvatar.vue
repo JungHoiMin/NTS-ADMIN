@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import { secureLocalStorage, secureSessionStorage } from '@/modules/storages';
+import { ref } from 'vue';
+import PersionalOptionsSettingDialog from '@/components/PersonalOptionsSetting/PersionalOptionsSettingDialog.vue';
 
 const circleUrl = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
 const router = useRouter();
+
+const isShowPersonalOptionsSettingDialog = ref<boolean>(false);
+
 const clickLogoutBtn = () => {
 	const loginInfo = secureLocalStorage.getItem<{ id: string; pw: string }>('loginInfo');
 	secureSessionStorage.removeItem('token');
@@ -20,10 +25,13 @@ const clickLogoutBtn = () => {
 	<el-dropdown trigger="click">
 		<el-avatar class="na-avatar" :size="50" :src="circleUrl" />
 		<template #dropdown>
-			<el-dropdown-item>사용자 설정</el-dropdown-item>
+			<el-dropdown-item @click="isShowPersonalOptionsSettingDialog = true">
+				사용자 설정
+			</el-dropdown-item>
 			<el-dropdown-item @click="clickLogoutBtn">로그아웃</el-dropdown-item>
 		</template>
 	</el-dropdown>
+	<PersionalOptionsSettingDialog v-model="isShowPersonalOptionsSettingDialog" />
 </template>
 
 <style scoped lang="scss">
