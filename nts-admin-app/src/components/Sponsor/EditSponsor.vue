@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, ref, defineProps } from 'vue';
-import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
+import { type FormInstance, type FormRules } from 'element-plus';
 import { emptyCheckRule, noWhitespaceRule } from '@/modules/commons/form/form.rules';
 import { validateOnlyEnglish } from '@/modules/commons/form/form.validates';
-import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { useRouter } from 'vue-router';
 import { useSponsorStore } from '@/stores/useSponsorStore';
 import type { RequestUpdateSponsorType } from '@/types/types.sponsor';
 import { editSponsor } from '@/modules/apis/apis.sponsor';
+import { HmNotification, HmPopup } from '@/plugins/HmPlus';
 
 const router = useRouter();
 const sponsorStore = useSponsorStore();
@@ -41,7 +41,7 @@ const clickEditSponsorBtn = async (formEl: FormInstance | undefined) => {
 			editSponsor(+props.idx, formData)
 				.then(() => {
 					sponsorStore.editSponsor(+props.idx, { ...formData });
-					ElNotification({
+					HmNotification({
 						title: '스폰서사 수정',
 						message: '스폰서사가 정상적으로 수정 되었습니다.',
 						type: 'success',
@@ -49,7 +49,7 @@ const clickEditSponsorBtn = async (formEl: FormInstance | undefined) => {
 					router.push({ name: 'Sponsor List' });
 				})
 				.catch((e) => {
-					HmPopupMessage.alert('스폰서사 수정 실패', e.message);
+					HmPopup('alert', '스폰서사 수정 실패', e.message);
 				});
 		} else {
 			console.error('스폰서사 수정 페이지 유효성 검사 실패', invalidFields);
@@ -58,11 +58,9 @@ const clickEditSponsorBtn = async (formEl: FormInstance | undefined) => {
 };
 
 const clickCancelBtn = () => {
-	HmPopupMessage.confirm('주의!!!', '확인버튼을 누르면 저장하지 않고 목록으로 돌아갑니다.').then(
-		() => {
-			router.push({ name: 'Sponsor List', replace: true });
-		},
-	);
+	HmPopup('confirm', '주의!!!', '확인버튼을 누르면 저장하지 않고 목록으로 돌아갑니다.').then(() => {
+		router.push({ name: 'Sponsor List', replace: true });
+	});
 };
 
 const keyDownAddInsruanceForm = (ev: KeyboardEvent) => {
@@ -72,7 +70,7 @@ const keyDownAddInsruanceForm = (ev: KeyboardEvent) => {
 onBeforeMount(async () => {
 	const sponsor = sponsorStore.getSponsorByIdx(+props.idx);
 	if (sponsor === null) {
-		await HmPopupMessage.alert('오류', '잘못된 접근입니다.\n보험사 정보 목록으로 돌아갑니다.');
+		await HmPopup('alert', '오류', '잘못된 접근입니다.\n보험사 정보 목록으로 돌아갑니다.');
 		await router.push({ name: 'Sponsor List', replace: true });
 	} else {
 		name.value = sponsor.name;
