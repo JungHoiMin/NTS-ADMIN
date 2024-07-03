@@ -43,13 +43,3 @@ export default (app: App) => {
 	createContainerInHmContainer('hm-notification-container');
 	installNotificationApp();
 };
-
-// export interface HmPlusType {
-// 	hm-popup: (
-// 		type: 'prompt' | 'alert' | 'confirm',
-// 		title: string,
-// 		message?: string,
-// 		options?: { okBtnName?: string; cancelBtnName?: string },
-// 	) => Promise<unknown>;
-// 	notify: (hm-notification: NotificationType) => void;
-// }
