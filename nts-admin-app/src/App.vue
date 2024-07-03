@@ -20,19 +20,8 @@ onBeforeMount(async () => {
 </template>
 
 <style lang="scss">
+@import '@/assets/css/app';
 @import '@/assets/css/hm.plus';
 @import '@/assets/css/custom.element-plus';
 @import '@/assets/css/commons';
-html,
-body,
-main,
-#app {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-//h1,
-//h2 {
-//	font-family: 맑은 고딕, serif;
-//}
 </style>
