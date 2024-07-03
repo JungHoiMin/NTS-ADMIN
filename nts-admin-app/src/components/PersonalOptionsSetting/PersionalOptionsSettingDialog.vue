@@ -16,8 +16,7 @@ const { platformOptions, sizeOptions, placementOptions, triggerOptions, themeOpt
 const personalOptionsSettingStore = usePersonalOptionsSettingStore();
 const {
 	getTheme,
-	getTextSize,
-	getButtonSize,
+  getSize,
 	getIsCollapse,
 	getUsePlatform,
 	getShowNetAddress,
@@ -31,8 +30,7 @@ const {
 
 const {
 	setTheme,
-	setTextSize,
-	setButtonSize,
+	setSize,
 	setIsCollapse,
 	setUsePlatform,
 	setShowNetAddress,
@@ -46,8 +44,7 @@ const {
 
 const formData = reactive<PersonalOptionsType>({
 	theme: 'white',
-	textSize: 'default',
-	buttonSize: 'default',
+	size: 'default',
 	showHint: true,
 	hintTrigger: 'focus',
 	hintPlacement: 'top',
@@ -63,8 +60,7 @@ const isSetClear = ref<boolean>(false);
 
 const save = () => {
 	setTheme(formData.theme);
-	setTextSize(formData.textSize);
-	setButtonSize(formData.buttonSize);
+	setSize(formData.size);
 	setShowHint(formData.showHint);
 	setHintTrigger(formData.hintTrigger);
 	setHintPlacement(formData.hintPlacement);
@@ -79,8 +75,7 @@ const save = () => {
 
 const setDefaultOptions = () => {
 	formData.theme = 'white';
-	formData.textSize = 'default';
-	formData.buttonSize = 'default';
+	formData.size = 'default';
 	formData.showHint = true;
 	formData.hintTrigger = 'focus';
 	formData.hintPlacement = 'top';
@@ -95,8 +90,7 @@ const setDefaultOptions = () => {
 const setClearOptions = () => {
 	isSetClear.value = true;
 	formData.theme = getTheme.value;
-	formData.textSize = getTextSize.value;
-	formData.buttonSize = getButtonSize.value;
+	formData.size = getSize.value;
 	formData.showHint = getShowHint.value;
 	formData.hintTrigger = getHintTrigger.value;
 	formData.hintPlacement = getHintPlacement.value;
@@ -159,18 +153,8 @@ watch(
 				</el-form-item>
 
 				<h3>크기</h3>
-				<el-form-item label="글자, 선택박스, 입력박스 크기">
-					<el-radio-group v-model="formData.textSize">
-						<el-radio
-							v-for="{ key, value } in sizeOptions"
-							:key="key"
-							:value="key"
-							:label="value"
-						/>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="버튼 크기">
-					<el-radio-group v-model="formData.buttonSize">
+				<el-form-item label="글자, 선택박스, 입력박스, 버튼 크기">
+					<el-radio-group v-model="formData.size">
 						<el-radio
 							v-for="{ key, value } in sizeOptions"
 							:key="key"

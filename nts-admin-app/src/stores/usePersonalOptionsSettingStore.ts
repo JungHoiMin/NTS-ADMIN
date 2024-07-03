@@ -22,8 +22,7 @@ type PlatformType = 'browser' | 'exe';
 
 export type PersonalOptionsType = {
 	theme: ThemeType;
-	textSize: SizeType;
-	buttonSize: SizeType;
+	size: SizeType;
 	showHint: boolean;
 	hintTrigger: TriggerType;
 	hintPlacement: PlacementType;
@@ -46,20 +45,12 @@ export const usePersonalOptionsSettingStore = defineStore('personalOptionsSettin
 		htmlEl.className = theme.value === 'white' ? '' : theme.value;
 	};
 
-	// NOTE:: 글자 크기 옵션
-	const textSize = ref<SizeType>(secureLocalStorage.getItem<SizeType>('textSize') || 'default');
-	const getTextSize = computed(() => textSize.value);
-	const setTextSize = (option: SizeType) => {
-		textSize.value = option;
-		secureLocalStorage.setItem('textSize', option);
-	};
-
-	// NOTE:: 버튼 크기 옵션
-	const buttonSize = ref<SizeType>(secureLocalStorage.getItem<SizeType>('buttonSize') || 'default');
-	const getButtonSize = computed(() => buttonSize.value);
-	const setButtonSize = (option: SizeType) => {
-		buttonSize.value = option;
-		secureLocalStorage.setItem('buttonSize', option);
+	// NOTE:: 크기 옵션
+	const size = ref<SizeType>(secureLocalStorage.getItem<SizeType>('size') || 'default');
+	const getSize = computed(() => size.value);
+	const setSize = (option: SizeType) => {
+		size.value = option;
+		secureLocalStorage.setItem('size', option);
 	};
 
 	// NOTE:: 검색창을 펼쳐둘 것인지에 대한 옵션
@@ -141,10 +132,8 @@ export const usePersonalOptionsSettingStore = defineStore('personalOptionsSettin
 	return {
 		getTheme,
 		setTheme,
-		getTextSize,
-		setTextSize,
-		getButtonSize,
-		setButtonSize,
+		getSize,
+		setSize,
 		getIsCollapse,
 		setIsCollapse,
 		getUsePlatform,
