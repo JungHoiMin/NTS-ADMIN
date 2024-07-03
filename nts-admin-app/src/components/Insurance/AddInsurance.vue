@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import type { RequestAddInsuranceType } from '@/types/types.insurance';
-import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
+import { type FormInstance, type FormRules } from 'element-plus';
 import { emptyCheckRule, lenLimitRule, noWhitespaceRule } from '@/modules/commons/form/form.rules';
 import { validateOnlyEnglish, validateOnlyNumber } from '@/modules/commons/form/form.validates';
-import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { addInsurance } from '@/modules/apis/apis.insurance';
 import { useRouter } from 'vue-router';
 import { useInsuranceStore } from '@/stores/useInsuranceStore';
 import { useOptionsStore } from '@/stores/useOptionsStore';
 import { storeToRefs } from 'pinia';
+import { HmNotification, HmPopup } from '@/plugins/HmPlus';
 
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
@@ -46,7 +46,7 @@ const clickAddInsuranceBtn = async (formEl: FormInstance | undefined) => {
 			addInsurance(formData)
 				.then((data) => {
 					insuranceStore.addInsurance({ idx: data.idx, ...formData });
-					ElNotification({
+					HmNotification({
 						title: '보험사 추가',
 						message: '보헙사가 정상적으로 추가 되었습니다.',
 						type: 'success',
@@ -54,7 +54,7 @@ const clickAddInsuranceBtn = async (formEl: FormInstance | undefined) => {
 					router.push({ name: 'Insurance List' });
 				})
 				.catch((e) => {
-					HmPopupMessage.alert('보험사 추가 실패', e.message);
+					HmPopup('alert', '보험사 추가 실패', e.message);
 				});
 		} else {
 			console.error('보험사 추가 페이지 유효성 검사 실패', invalidFields);
@@ -63,11 +63,9 @@ const clickAddInsuranceBtn = async (formEl: FormInstance | undefined) => {
 };
 
 const clickCancelBtn = () => {
-	HmPopupMessage.confirm('주의!!!', '확인버튼을 누르면 저장하지 않고 목록으로 돌아갑니다.').then(
-		() => {
-			router.push({ name: 'Insurance List', replace: true });
-		},
-	);
+	HmPopup('confirm', '주의!!!', '확인버튼을 누르면 저장하지 않고 목록으로 돌아갑니다.').then(() => {
+		router.push({ name: 'Insurance List', replace: true });
+	});
 };
 
 const keyDownAddInsruanceForm = (ev: KeyboardEvent) => {

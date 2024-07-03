@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import AppTable from '@/components/AppTable.vue';
 import { useRouter } from 'vue-router';
-import { ElNotification } from 'element-plus';
-import { HmPopupMessage } from '@/components/HmPopupMessage';
 import type { ManagerType } from '@/types/types.manager';
 import { computed, onBeforeMount, ref } from 'vue';
 import { deleteManager, loadManager } from '@/modules/apis/apis.manager';
 import dayjs from 'dayjs';
+import { HmNotification, HmPopup } from '@/plugins/HmPlus';
 
 const router = useRouter();
 
@@ -49,13 +48,14 @@ const clickEditAgentManagerBtn = (id: string) => {
 const clickDeleteAgentManagerBtn = (id: string) => {
 	const agentManager = getAgentManagerById(id);
 	if (agentManager === null) return;
-	HmPopupMessage.confirm(
+	HmPopup(
+		'confirm',
 		'AM 삭제',
 		`${agentManager.name} 님을 <strong style="color: red">삭제</strong>하시겠습니까?`,
 	).then(() => {
 		deleteManager(id).then(() => {
 			removeAgentManagerById(id);
-			ElNotification({
+			HmNotification({
 				title: 'AM 삭제',
 				message: `${agentManager.name}님을 삭제 했습니다.`,
 				type: 'success',

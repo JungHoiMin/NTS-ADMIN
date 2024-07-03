@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, defineProps, onBeforeUnmount, onBeforeMount } from 'vue';
-import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
+import { type FormInstance, type FormRules } from 'element-plus';
 import { emptyCheckRule } from '@/modules/commons/form/form.rules';
-import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { useRouter } from 'vue-router';
 import type { RequestUpdateManagerType } from '@/types/types.manager';
 import { editManager, loadManagerById } from '@/modules/apis/apis.manager';
@@ -10,6 +9,7 @@ import { useOptionsStore } from '@/stores/useOptionsStore';
 import { storeToRefs } from 'pinia';
 import type { OptionType } from '@/types/types.options';
 import { loadTeamMemberOptions } from '@/modules/apis/apis.options';
+import { HmNotification, HmPopup } from '@/plugins/HmPlus';
 
 const props = defineProps<{
 	id: string;
@@ -55,7 +55,7 @@ const clickEditManagerBtn = async (formEl: FormInstance | undefined) => {
 			if (formData.joinDate !== null) formData.joinDate = new Date(formData.joinDate);
 			editManager(props.id, formData)
 				.then(() => {
-					ElNotification({
+					HmNotification({
 						title: `${props.teamType} 담당자 수정`,
 						message: `${props.teamType}팀에 ${formData.name}님이 정상적으로 수정 되었습니다.`,
 						type: 'success',
@@ -63,7 +63,7 @@ const clickEditManagerBtn = async (formEl: FormInstance | undefined) => {
 					router.push({ name: nextRouterName });
 				})
 				.catch((e) => {
-					HmPopupMessage.alert(`${formData.name} 담당자 수정 실패`, e.message);
+					HmPopup('alert', `${formData.name} 담당자 수정 실패`, e.message);
 				});
 		} else {
 			console.error(`${props.teamType} 담당자 추가 페이지 유효성 검사 실패`, invalidFields);
@@ -73,7 +73,8 @@ const clickEditManagerBtn = async (formEl: FormInstance | undefined) => {
 
 const clickCancelBtn = () => {
 	const nextPageName = props.teamType === 'NTS' ? '홈' : '목록';
-	HmPopupMessage.confirm(
+	HmPopup(
+		'confirm',
 		'주의!!!',
 		`확인버튼을 누르면 저장하지 않고 ${nextPageName}으로 돌아갑니다.`,
 	).then(() => {

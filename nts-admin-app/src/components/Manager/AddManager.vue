@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { computed, reactive, ref, defineProps } from 'vue';
-import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
+import { type FormInstance, type FormRules } from 'element-plus';
 import { emailRule, emptyCheckRule } from '@/modules/commons/form/form.rules';
-import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { useRouter } from 'vue-router';
 import type { RequestAddManagerType } from '@/types/types.manager';
 import { addManager } from '@/modules/apis/apis.manager';
 import { useOptionsStore } from '@/stores/useOptionsStore';
 import { storeToRefs } from 'pinia';
 import type { OptionType } from '@/types/types.options';
+import { HmNotification, HmPopup } from '@/plugins/HmPlus';
 
 const props = defineProps<{
 	teamType: 'NTS' | 'AM';
@@ -53,7 +53,7 @@ const clickAddManagerBtn = async (formEl: FormInstance | undefined) => {
 			if (formData.joinDate !== null) formData.joinDate = new Date(formData.joinDate);
 			addManager(formData)
 				.then(() => {
-					ElNotification({
+					HmNotification({
 						title: `${props.teamType} 담당자 추가`,
 						message: `${props.teamType}팀에 ${formData.name}님이 정상적으로 추가 되었습니다.`,
 						type: 'success',
@@ -61,7 +61,7 @@ const clickAddManagerBtn = async (formEl: FormInstance | undefined) => {
 					router.push({ name: nextRouterName });
 				})
 				.catch((e) => {
-					HmPopupMessage.alert(`${props.teamType} 담당자 추가 실패`, e.message);
+					HmPopup('alert', `${props.teamType} 담당자 추가 실패`, e.message);
 				});
 		} else {
 			console.error(`${props.teamType} 담당자 추가 페이지 유효성 검사 실패`, invalidFields);
@@ -71,7 +71,8 @@ const clickAddManagerBtn = async (formEl: FormInstance | undefined) => {
 
 const clickCancelBtn = () => {
 	const nextPageName = props.teamType === 'NTS' ? '로그인화면' : '목록';
-	HmPopupMessage.confirm(
+	HmPopup(
+		'confirm',
 		'주의!!!',
 		`확인버튼을 누르면 저장하지 않고 ${nextPageName}으로 돌아갑니다.`,
 	).then(() => {
