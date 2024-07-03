@@ -4,7 +4,7 @@ import HmNotification from '@/plugins/HmPlus/components/hm-notification/HmNotifi
 import { createPinia } from 'pinia';
 
 export { default as HmPopup } from './components/hm-popup';
-export { default as HmNotification } from './components/hm-notification';
+export { default as HmNotification, type NotificationType } from './components/hm-notification';
 
 export default (app: App) => {
 	const createHmContainer = () => {
