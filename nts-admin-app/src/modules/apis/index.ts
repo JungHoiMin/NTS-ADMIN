@@ -1,13 +1,14 @@
 import axios, { isAxiosError } from 'axios';
 import type { ResponseErrorType } from '@/types/types.axios';
-import { HmPopupMessage } from '@/components/HmPopupMessage';
 import router from '@/router';
+import { HmPopup } from '@/plugins/HmPlus';
 
 export const getAxiosError = (e: unknown) => {
 	if (isAxiosError<ResponseErrorType, any>(e)) {
 		if (e.response) {
 			if (e.response.data.statusCode === 401 && e.response.data.message === 'Unauthorized') {
-				HmPopupMessage.alert(
+				HmPopup(
+					'alert',
 					'인증 오류',
 					'<strong style="color: red">사용자 인증을 다시해야합니다.</strong>\n확인을 누르시면 로그인 화면으로 돌아갑니다.',
 				).then(async () => {

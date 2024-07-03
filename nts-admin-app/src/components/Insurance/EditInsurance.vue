@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, ref, defineProps } from 'vue';
 import type { RequestUpdateInsuranceType } from '@/types/types.insurance';
-import { ElNotification, type FormInstance, type FormRules } from 'element-plus';
+import { type FormInstance, type FormRules } from 'element-plus';
 import { emptyCheckRule, noWhitespaceRule } from '@/modules/commons/form/form.rules';
 import { validateOnlyEnglish } from '@/modules/commons/form/form.validates';
-import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { useRouter } from 'vue-router';
 import { useInsuranceStore } from '@/stores/useInsuranceStore';
 import { editInsurance } from '@/modules/apis/apis.insurance';
 import { useOptionsStore } from '@/stores/useOptionsStore';
 import { storeToRefs } from 'pinia';
+import { HmNotification, HmPopup } from '@/plugins/HmPlus';
 
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
@@ -48,7 +48,7 @@ const clickEditInsuranceBtn = async (formEl: FormInstance | undefined) => {
 			editInsurance(+props.idx, formData)
 				.then(() => {
 					insuranceStore.editInsurance(+props.idx, { ...formData });
-					ElNotification({
+					HmNotification({
 						title: '보험사 수정',
 						message: '보헙사가 정상적으로 수정 되었습니다.',
 						type: 'success',
@@ -56,7 +56,7 @@ const clickEditInsuranceBtn = async (formEl: FormInstance | undefined) => {
 					router.push({ name: 'Insurance List' });
 				})
 				.catch((e) => {
-					HmPopupMessage.alert('보험사 수정 실패', e.message);
+					HmPopup('alert', '보험사 수정 실패', e.message);
 				});
 		} else {
 			console.error('보험사 수정 페이지 유효성 검사 실패', invalidFields);
@@ -65,11 +65,9 @@ const clickEditInsuranceBtn = async (formEl: FormInstance | undefined) => {
 };
 
 const clickCancelBtn = () => {
-	HmPopupMessage.confirm('주의!!!', '확인버튼을 누르면 저장하지 않고 목록으로 돌아갑니다.').then(
-		() => {
-			router.push({ name: 'Insurance List', replace: true });
-		},
-	);
+	HmPopup('confirm', '주의!!!', '확인버튼을 누르면 저장하지 않고 목록으로 돌아갑니다.').then(() => {
+		router.push({ name: 'Insurance List', replace: true });
+	});
 };
 
 const keyDownAddInsruanceForm = (ev: KeyboardEvent) => {
@@ -79,7 +77,7 @@ const keyDownAddInsruanceForm = (ev: KeyboardEvent) => {
 onBeforeMount(async () => {
 	const insurance = insuranceStore.getInsuranceByIdx(+props.idx);
 	if (insurance === null) {
-		await HmPopupMessage.alert('오류', '잘못된 접근입니다.\n보험사 정보 목록으로 돌아갑니다.');
+		await HmPopup('alert', '오류', '잘못된 접근입니다.\n보험사 정보 목록으로 돌아갑니다.');
 		await router.push({ name: 'Insurance List', replace: true });
 	} else {
 		code.value = insurance.code;

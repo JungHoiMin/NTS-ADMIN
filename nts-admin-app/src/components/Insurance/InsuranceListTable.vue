@@ -3,11 +3,10 @@ import AppTable from '@/components/AppTable.vue';
 import { useInsuranceStore } from '@/stores/useInsuranceStore';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { HmPopupMessage } from '@/components/HmPopupMessage';
 import { deleteInsurance } from '@/modules/apis/apis.insurance';
-import { ElNotification } from 'element-plus';
 import { computed } from 'vue';
 import { useOptionsStore } from '@/stores/useOptionsStore';
+import { HmNotification, HmPopup } from '@/plugins/HmPlus';
 
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
@@ -41,13 +40,15 @@ const clickEditInsuranceBtn = (idx: number) => {
 const clickDeleteInsuranceBtn = (idx: number) => {
 	const insurance = insuranceStore.getInsuranceByIdx(idx);
 	if (insurance === null) return;
-	HmPopupMessage.confirm(
+	console.log('여기');
+	HmPopup(
+		'confirm',
 		'보험사 삭제',
 		`${insurance.code}(${insurance.name}) 보험사를 <strong style="color: red">삭제</strong>하시겠습니까?`,
 	).then(() => {
 		deleteInsurance(idx).then(() => {
 			insuranceStore.removeInsuranceByIdx(idx);
-			ElNotification({
+			HmNotification({
 				title: '보험사 삭제',
 				message: `${insurance.code}(${insurance.name}) 보험사를 삭제 했습니다.`,
 				type: 'success',
