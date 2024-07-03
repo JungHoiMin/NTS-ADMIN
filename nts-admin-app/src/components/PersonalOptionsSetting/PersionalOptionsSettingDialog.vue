@@ -6,7 +6,7 @@ import {
 	usePersonalOptionsSettingStore,
 } from '@/stores/usePersonalOptionsSettingStore';
 import { storeToRefs } from 'pinia';
-import {HmPopup} from "@/plugins/HmPlus";
+import { HmPopup } from '@/plugins/HmPlus';
 
 const isShowDialog = defineModel<boolean>({ required: true });
 
@@ -16,7 +16,7 @@ const { platformOptions, sizeOptions, placementOptions, triggerOptions, themeOpt
 const personalOptionsSettingStore = usePersonalOptionsSettingStore();
 const {
 	getTheme,
-  getSize,
+	getSize,
 	getIsCollapse,
 	getUsePlatform,
 	getShowNetAddress,

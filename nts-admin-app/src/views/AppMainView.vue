@@ -7,6 +7,11 @@ import { loadTeamIdOptions, loadTeamMemberOptions } from '@/modules/apis/apis.op
 import { useOptionsStore } from '@/stores/useOptionsStore';
 import { loadSponsor } from '@/modules/apis/apis.sponsor';
 import { useSponsorStore } from '@/stores/useSponsorStore';
+import { storeToRefs } from 'pinia';
+import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSettingStore';
+
+const personalOptionsSettingStore = usePersonalOptionsSettingStore();
+const { getSize } = storeToRefs(personalOptionsSettingStore);
 
 const insuranceStore = useInsuranceStore();
 const sponsorStore = useSponsorStore();

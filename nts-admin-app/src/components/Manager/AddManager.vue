@@ -9,6 +9,7 @@ import { useOptionsStore } from '@/stores/useOptionsStore';
 import { storeToRefs } from 'pinia';
 import type { OptionType } from '@/types/types.options';
 import { HmNotification, HmPopup } from '@/plugins/HmPlus';
+import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSettingStore';
 
 const props = defineProps<{
 	teamType: 'NTS' | 'AM';
@@ -18,6 +19,8 @@ const nextRouterName = props.teamType === 'NTS' ? 'Login' : 'Agent Manager List'
 const router = useRouter();
 const optionsStore = useOptionsStore();
 const { getAmTeamIdOptions, getNtsTeamIdOptions } = storeToRefs(optionsStore);
+const personalOptionsSettingStore = usePersonalOptionsSettingStore();
+const { getSize } = storeToRefs(personalOptionsSettingStore);
 
 const addedOptions = ref<OptionType[]>([]);
 const formRef = ref<FormInstance>();
@@ -110,6 +113,7 @@ const keyDownAddManagerForm = (ev: KeyboardEvent) => {
 	<el-form
 		ref="formRef"
 		class="add-form"
+		:size="getSize"
 		:model="formData"
 		label-position="right"
 		label-width="auto"

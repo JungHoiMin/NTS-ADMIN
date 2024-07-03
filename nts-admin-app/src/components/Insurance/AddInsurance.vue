@@ -16,6 +16,9 @@ const router = useRouter();
 const insuranceStore = useInsuranceStore();
 const optionsStore = useOptionsStore();
 const { getNtsTeamMemberOptions } = storeToRefs(optionsStore);
+const personalOptionsSettingStore = usePersonalOptionsSettingStore();
+const { getSize } = storeToRefs(personalOptionsSettingStore);
+
 const formRef = ref<FormInstance>();
 
 const formData = reactive<RequestAddInsuranceType>({
@@ -79,6 +82,7 @@ const keyDownAddInsruanceForm = (ev: KeyboardEvent) => {
 	<el-form
 		ref="formRef"
 		class="add-form"
+		:size="getSize"
 		:model="formData"
 		label-position="right"
 		label-width="auto"

@@ -10,11 +10,15 @@ import { editInsurance } from '@/modules/apis/apis.insurance';
 import { useOptionsStore } from '@/stores/useOptionsStore';
 import { storeToRefs } from 'pinia';
 import { HmNotification, HmPopup } from '@/plugins/HmPlus';
+import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSettingStore';
 
 const router = useRouter();
 const insuranceStore = useInsuranceStore();
 const optionsStore = useOptionsStore();
 const { getNtsTeamMemberOptions } = storeToRefs(optionsStore);
+const personalOptionsSettingStore = usePersonalOptionsSettingStore();
+const { getSize } = storeToRefs(personalOptionsSettingStore);
+
 const formRef = ref<FormInstance>();
 
 const props = defineProps({
@@ -93,6 +97,7 @@ onBeforeMount(async () => {
 	<el-form
 		ref="formRef"
 		class="add-form"
+		:size="getSize"
 		:model="formData"
 		label-position="right"
 		label-width="auto"

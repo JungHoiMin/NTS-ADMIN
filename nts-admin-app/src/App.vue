@@ -12,8 +12,9 @@ const { getTheme } = storeToRefs(personalOptionsSettingStore);
 const { setTheme } = personalOptionsSettingStore;
 
 onBeforeMount(async () => {
+	setTheme(getTheme.value);
+
 	await Promise.all([
-		setTheme(getTheme.value),
 		loadTeamIdOptions('NTS')
 			.then((data) => optionsStore.setNtsTeamIdOptions(data))
 			.catch((e) => console.error(e)),

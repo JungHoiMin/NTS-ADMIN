@@ -8,9 +8,14 @@ import { useSponsorStore } from '@/stores/useSponsorStore';
 import type { RequestAddSponsorType } from '@/types/types.sponsor';
 import { addSponsor } from '@/modules/apis/apis.sponsor';
 import { HmNotification, HmPopup } from '@/plugins/HmPlus';
+import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSettingStore';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const sponsorStore = useSponsorStore();
+const personalOptionsSettingStore = usePersonalOptionsSettingStore();
+const { getSize } = storeToRefs(personalOptionsSettingStore);
+
 const formRef = ref<FormInstance>();
 
 const formData = reactive<RequestAddSponsorType>({
@@ -66,6 +71,7 @@ const keyDownAddSponsorForm = (ev: KeyboardEvent) => {
 	<el-form
 		ref="formRef"
 		class="add-form"
+		:size="getSize"
 		:model="formData"
 		label-position="right"
 		label-width="auto"
