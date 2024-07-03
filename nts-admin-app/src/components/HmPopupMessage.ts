@@ -2,7 +2,7 @@ import { h, render } from 'vue';
 import { ElButton } from 'element-plus';
 
 export class HmPopupMessage {
-	private static elementId = 'popup-message';
+	private static elementId = 'hm-popup-message';
 
 	private static reset() {
 		render(null, document.getElementById(this.elementId) as HTMLElement);
@@ -29,9 +29,9 @@ export class HmPopupMessage {
 	}
 
 	private static newContent(title: string, body: string) {
-		return h('div', { class: 'popup-content' }, [
-			h('h3', { class: 'popup-title' }, title),
-			h('div', { class: 'popup-body', innerHTML: body }),
+		return h('div', { class: 'hm-popup-content' }, [
+			h('h3', { class: 'hm-popup-title' }, title),
+			h('div', { class: 'hm-popup-body', innerHTML: body }),
 		]);
 	}
 
@@ -45,7 +45,7 @@ export class HmPopupMessage {
 				h(
 					'div',
 					{
-						class: 'popup-bg',
+						class: 'hm-popup-bg',
 						tabIndex: 0,
 						onVnodeMounted(vnode) {
 							if (vnode.el === null) return;
@@ -58,11 +58,11 @@ export class HmPopupMessage {
 							}
 						},
 					},
-					h('div', { class: 'popup-box' }, [
+					h('div', { class: 'hm-popup-box' }, [
 						this.newContent(title, body),
 						h(
 							'div',
-							{ class: 'popup-actions' },
+							{ class: 'hm-popup-actions' },
 							this.newButton('info', confirmBtnName, resolve, true),
 						),
 					]),
@@ -88,7 +88,7 @@ export class HmPopupMessage {
 				h(
 					'div',
 					{
-						class: 'popup-bg',
+						class: 'hm-popup-bg',
 						tabIndex: 0,
 						onVnodeMounted(vnode) {
 							if (vnode.el === null) return;
@@ -104,9 +104,9 @@ export class HmPopupMessage {
 							}
 						},
 					},
-					h('div', { class: 'popup-box' }, [
+					h('div', { class: 'hm-popup-box' }, [
 						this.newContent(title, body),
-						h('div', { class: 'popup-actions' }, [
+						h('div', { class: 'hm-popup-actions' }, [
 							this.newButton('primary', confirmBtnName, resolve, true),
 							this.newButton('danger', cancelBtnName, reject, false),
 						]),

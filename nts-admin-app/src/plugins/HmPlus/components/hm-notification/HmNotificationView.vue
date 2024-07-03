@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useNotificationStore } from '@/plugins/HmPlugin/stores/useNotificationStore';
+import { useNotificationStore } from '@/plugins/HmPlus/stores/useNotificationStore';
 import { storeToRefs } from 'pinia';
 
 const notificationStore = useNotificationStore();

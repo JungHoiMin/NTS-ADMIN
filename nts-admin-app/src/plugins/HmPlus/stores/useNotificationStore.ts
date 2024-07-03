@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import { type NotificationType } from '../types/types.hm-modal';
+import type { NotificationType } from '@/plugins/HmPlus';
 
 export const useNotificationStore = defineStore('notification', () => {
 	const notificationList = ref<NotificationType[]>([]);
