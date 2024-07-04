@@ -14,7 +14,13 @@
 }
 
 .bg-main {
- background-color: #e9eef4;
+ background-color: rgba(233, 238, 244, 1);
+}
+
+html.dark {
+ .bg-main {
+  background-color: rgba(22, 17, 11, 1);
+ }
 }
 
 .search-section {
