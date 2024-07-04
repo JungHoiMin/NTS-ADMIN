@@ -41,7 +41,7 @@ onBeforeMount(async () => {
 			<el-aside width="200px">
 				<AppSideBar />
 			</el-aside>
-			<el-main>
+			<el-main class="bg-main">
 				<RouterView />
 			</el-main>
 		</el-container>

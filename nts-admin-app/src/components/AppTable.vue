@@ -46,14 +46,16 @@ const cellClassName = (data: { row: any; column: any; rowIndex: number; columnIn
 </script>
 
 <template>
-	<el-row :gutter="20" justify="space-between">
-		<el-col :span="20" v-if="searchKeyList && searchKeyList.length > 0">
-			<el-input :size="getSize" :placeholder="props.searchHint" v-model="searchText" />
-		</el-col>
-		<el-col :span="searchKeyList && searchKeyList.length > 0 ? 4 : 24" style="text-align: right">
-			<el-button :size="getSize" @click="$emit('addItem')" type="primary">추가하기</el-button>
-		</el-col>
-	</el-row>
+	<div class="search-section">
+		<el-row :gutter="20" justify="space-between">
+			<el-col :span="20" v-if="searchKeyList && searchKeyList.length > 0">
+				<el-input :size="getSize" :placeholder="props.searchHint" v-model="searchText" />
+			</el-col>
+			<el-col :span="searchKeyList && searchKeyList.length > 0 ? 4 : 24" style="text-align: right">
+				<el-button :size="getSize" @click="$emit('addItem')" type="primary">추가하기</el-button>
+			</el-col>
+		</el-row>
+	</div>
 	<el-table
 		class-name="app-table-section"
 		:size="getSize"
@@ -85,10 +87,3 @@ const cellClassName = (data: { row: any; column: any; rowIndex: number; columnIn
 		</el-table-column>
 	</el-table>
 </template>
-
-<style lang="scss">
-.app-table-section {
-	width: 100%;
-	height: calc(100% - 120px);
-}
-</style>
