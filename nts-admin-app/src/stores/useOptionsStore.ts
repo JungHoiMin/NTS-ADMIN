@@ -1,6 +1,7 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import type { OptionType } from '@/types/types.options';
 import { computed, ref } from 'vue';
+import { useInsuranceStore } from '@/stores/useInsuranceStore';
 
 export const useOptionsStore = defineStore('options', () => {
 	const placementOptions: OptionType[] = [
@@ -36,6 +37,24 @@ export const useOptionsStore = defineStore('options', () => {
 		{ key: 'white', value: '화이트' },
 		{ key: 'dark', value: '다크' },
 	];
+	const operationOptions: OptionType[] = [
+		{ key: 0, value: '운영예정' },
+		{ key: 1, value: '운영중' },
+		{ key: 2, value: '운영종료' },
+		{ key: 3, value: '보류' },
+	];
+	const integSalesTableOptions: OptionType[] = [
+		{ key: 0, value: '적용안됨' },
+		{ key: 1, value: '적용됨' },
+	];
+	const onnaraOptions: OptionType[] = [
+		{ key: 0, value: '적용안됨' },
+		{ key: 1, value: '적용됨' },
+	];
+	const pdsOptions: OptionType[] = [
+		{ key: 0, value: '적용안됨' },
+		{ key: 1, value: '적용됨' },
+	];
 	const ntsTeamMemberOptions = ref<OptionType[]>([]);
 	const ntsTeamIdOptions = ref<OptionType[]>([]);
 	const amTeamIdOptions = ref<OptionType[]>([]);
@@ -64,6 +83,35 @@ export const useOptionsStore = defineStore('options', () => {
 		{ key: -1, value: '전체' },
 		...amTeamIdOptions.value,
 	]);
+	const getOperationOptionsForSearch = computed<OptionType[]>(() => [
+		{ key: -1, value: '전체' },
+		...operationOptions,
+	]);
+	const getIntegSalesTableOptionsForSearch = computed<OptionType[]>(() => [
+		{ key: -1, value: '전체' },
+		...integSalesTableOptions,
+	]);
+	const getMultipleInsuranceOptionsForSearch = computed<OptionType[]>(() => [
+		{ key: -1, value: '전체' },
+		{ key: 0, value: '단일판매' },
+		{ key: 1, value: '복합판매' },
+	]);
+	const getInsuranceOptions = computed<OptionType[]>(() => {
+		const insuranceStore = useInsuranceStore();
+		const { getInsuranceList } = storeToRefs(insuranceStore);
+		return getInsuranceList.value.map((insurance) => ({
+			key: insurance.code,
+			value: insurance.name,
+		}));
+	});
+	const getOnnaraOptionsForSearch = computed<OptionType[]>(() => [
+		{ key: -1, value: '전체' },
+		...onnaraOptions,
+	]);
+	const getPDSOptionsForSearch = computed<OptionType[]>(() => [
+		{ key: -1, value: '전체' },
+		...pdsOptions,
+	]);
 
 	const setNtsTeamMemberOptions = (newNtsManagerGroupOptions: OptionType[]) => {
 		ntsTeamMemberOptions.value = newNtsManagerGroupOptions;
@@ -87,6 +135,13 @@ export const useOptionsStore = defineStore('options', () => {
 		getNtsTeamIdOptionsForSearch,
 		getAmTeamIdOptions,
 		getAmTeamIdOptionsForSearch,
+		getIntegSalesTableOptionsForSearch,
+		getOperationOptionsForSearch,
+		getOnnaraOptionsForSearch,
+		getPDSOptionsForSearch,
+		getMultipleInsuranceOptionsForSearch,
+
+		getInsuranceOptions,
 		setNtsTeamMemberOptions,
 		setNtsTeamIdOptions,
 		setAmTeamIdOptions,

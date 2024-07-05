@@ -35,3 +35,12 @@
  height: calc(100% - 160px);
  border-radius: 1rem;
 }
+
+.el-collapse-item.search-option-header{
+ .el-collapse-item__header {
+  height: 88px;
+ }
+ .el-collapse-item__content {
+  padding-bottom: 0;
+ }
+}

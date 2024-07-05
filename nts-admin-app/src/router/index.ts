@@ -24,6 +24,7 @@ import EditSponsor from '@/components/Sponsor/EditSponsor.vue';
 import AgentManagerListTable from '@/components/AgentManager/AgentManagerListTable.vue';
 import AddManager from '@/components/Manager/AddManager.vue';
 import EditManager from '@/components/Manager/EditManager.vue';
+import CallCenterInfoListTable from '@/components/CallCenterInfo/CallCenterInfoListTable.vue';
 
 const checkAuth =
 	() => (from: RouteLocationNormalized, to: RouteLocationNormalized, next: NavigationGuardNext) => {
@@ -137,6 +138,13 @@ const router = createRouter({
 					path: 'call-center',
 					name: 'Call Center',
 					component: CallCenterInfoManagementView,
+					children: [
+						{
+							path: '',
+							name: 'Call Center List',
+							component: CallCenterInfoListTable,
+						},
+					],
 				},
 				{
 					path: 'nts-app',

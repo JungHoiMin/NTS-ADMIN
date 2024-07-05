@@ -2,26 +2,18 @@
  max-width: 600px;
 }
 
-.h-36 {
- height: 36px;
-}
-.h-66 {
- height: 66px;
-}
-.h-50 {
- height: 50px;
-}
+.h-36 { height: 36px }
+.h-66 { height: 66px }
+.h-50 { height: 50px }
+.h-80p { height: 80% }
+.h-100p { height: 100% }
 
-.h-80p {
- height: 80%;
-}
-.h-100p {
- height: 100%;
-}
+.w-200 { width: 200px }
+.w-220 { width: 220px }
+.w-582 { width: 582px }
 
-.w-200 {
- width: 200px;
-}
+.p-i-20 { padding-inline: 20px }
+.p-8 { padding: 8px }
 
 .bg-main {
  background-color: rgba(233, 238, 244, 1);

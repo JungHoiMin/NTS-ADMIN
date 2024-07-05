@@ -30,7 +30,7 @@ const goPageByName = (name: string, replace: boolean = true) => {
 					<template #title><el-text :size="getSize">AM 관리</el-text></template>
 				</el-menu-item>
 
-				<el-menu-item index="4" @click="goPageByName('Call Center')">
+				<el-menu-item index="4" @click="goPageByName('Call Center List')">
 					<template #title><el-text :size="getSize">콜 센터정보 관리</el-text></template>
 				</el-menu-item>
 
