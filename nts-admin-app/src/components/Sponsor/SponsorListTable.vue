@@ -10,7 +10,7 @@ const router = useRouter();
 const sponsorStore = useSponsorStore();
 const { getSponsorList } = storeToRefs(sponsorStore);
 const sponsorColumnsList = [
-	{ prop: 'idx', label: '스폰서사 코드', width: 120 },
+	{ prop: 'idx', label: '스폰서사 코드', width: 130 },
 	{ prop: 'name', label: '스폰서사 명', width: 200 },
 	{ prop: 'suffix', label: '접미사(영문)', width: 200 },
 ];

@@ -43,6 +43,12 @@ const cellClassName = (data: { row: any; column: any; rowIndex: number; columnIn
 		return 'actions';
 	}
 };
+
+const getRowHeight = computed(() => {
+	if (getSize.value === 'small') return 'h-36';
+	else if (getSize.value === 'large') return 'h-66';
+	else return 'h-50';
+});
 </script>
 
 <template>
@@ -60,7 +66,7 @@ const cellClassName = (data: { row: any; column: any; rowIndex: number; columnIn
 		class-name="app-table-section"
 		:size="getSize"
 		:data="searchedTableData"
-		row-class-name="table-row"
+		:row-class-name="`table-row ${getRowHeight}`"
 		:cell-class-name="cellClassName"
 	>
 		<el-table-column
@@ -68,17 +74,36 @@ const cellClassName = (data: { row: any; column: any; rowIndex: number; columnIn
 			:key="column.prop"
 			:prop="column.prop"
 			:label="column.label"
-			:width="column.width"
-		/>
-		<el-table-column fixed="right" :min-width="200" align="right">
+			:min-width="column.width"
+		>
+			<template #header="scope">
+				<el-text :size="getSize">{{ scope.column.label }}</el-text>
+			</template>
+			<template #default="scope">
+				<el-text :size="getSize">{{ scope.row[column.prop] }}</el-text>
+			</template>
+		</el-table-column>
+		<el-table-column fixed="right" :min-width="180" align="right">
 			<template #default="scope">
 				<slot name="actions" :key="scope.row[keyName]" />
-				<el-button circle type="info" plain @click="$emit('editItem', scope.row[keyName])">
+				<el-button
+					:size="getSize"
+					circle
+					type="info"
+					plain
+					@click="$emit('editItem', scope.row[keyName])"
+				>
 					<template #icon>
 						<i class="bi bi-pencil-square"></i>
 					</template>
 				</el-button>
-				<el-button circle type="danger" plain @click="$emit('deleteItem', scope.row[keyName])">
+				<el-button
+					:size="getSize"
+					circle
+					type="danger"
+					plain
+					@click="$emit('deleteItem', scope.row[keyName])"
+				>
 					<template #icon>
 						<i class="bi bi-trash3"></i>
 					</template>

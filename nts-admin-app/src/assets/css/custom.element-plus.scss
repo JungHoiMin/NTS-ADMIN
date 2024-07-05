@@ -10,12 +10,26 @@
  }
 }
 
-.el-dialog__body {
- height: calc(100% - 80px);
- overflow-x: hidden;
- overflow-y: auto;
+.el-dialog {
+ border-radius: 1rem;
+ padding: 24px;
+ .el-dialog__body {
+  padding-inline: 24px;
+  height: calc(100% - 80px);
+  overflow-x: hidden;
+  overflow-y: auto;
+ }
 }
 
+.app-table-section,
+.el-button,
+.el-input {
+ box-shadow: 4px 4px 4px #0000001a;
+
+ &.is-circle {
+  box-shadow: none;
+ }
+}
 .app-table-section {
  width: 100%;
  height: calc(100% - 160px);
