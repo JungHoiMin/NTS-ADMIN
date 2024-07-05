@@ -7,6 +7,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css';
 import App from './App.vue';
 import router from './router';
 import HmPlus from '@/plugins/HmPlus';
+import '@/plugins/HmPlus/css/hm.plus.scss';
 
 const pinia = createPinia();
 

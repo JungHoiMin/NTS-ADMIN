@@ -28,7 +28,6 @@ onBeforeMount(async () => {
 
 <style lang="scss">
 @import '@/assets/css/app';
-@import '@/assets/css/hm.plus';
 @import '@/assets/css/custom.element-plus';
 @import '@/assets/css/commons';
 </style>
