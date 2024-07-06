@@ -18,8 +18,8 @@ const closeOption = () => {
 </script>
 
 <template>
-	<el-tag v-if="optionKey != -1" :size="getSize" closable @close="closeOption">
-		<el-text type="primary" :size="getSize">{{ label }}: {{ optionValue }}</el-text>
+	<el-tag v-if="optionKey != -1" :size="getSize" closable @close="closeOption" round>
+		{{ label }}: {{ optionValue }}
 	</el-tag>
 </template>
 

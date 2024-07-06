@@ -86,13 +86,8 @@ onMounted(() => {
 		:size="getSize"
 	>
 		<template #header v-if="selectAll">
-			<el-checkbox
-				v-model="checkAll"
-				:indeterminate="indeterminate"
-				@change="handleCheckAll"
-				:size="getSize"
-			>
-				<el-text>전체</el-text>
+			<el-checkbox v-model="checkAll" :indeterminate="indeterminate" @change="handleCheckAll">
+				전체
 			</el-checkbox>
 		</template>
 		<el-option
@@ -101,7 +96,7 @@ onMounted(() => {
 			:value="option.key"
 			:label="option.value"
 		>
-			<el-text :size="getSize">{{ option.value }}</el-text>
+			{{ option.value }}
 		</el-option>
 	</el-select>
 </template>

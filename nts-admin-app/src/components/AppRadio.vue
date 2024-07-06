@@ -15,7 +15,7 @@ defineProps<{
 			:value="option.key"
 			:label="option.value"
 		>
-			<el-text>{{ option.value }}</el-text>
+			{{ option.value }}
 		</el-radio-button>
 	</el-radio-group>
 </template>
