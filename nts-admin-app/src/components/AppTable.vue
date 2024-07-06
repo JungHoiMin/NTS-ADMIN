@@ -53,14 +53,17 @@ const getRowHeight = computed(() => {
 
 <template>
 	<div class="search-section">
-		<el-row :gutter="20" justify="space-between">
-			<el-col :span="20" v-if="searchKeyList && searchKeyList.length > 0">
-				<el-input :size="getSize" :placeholder="props.searchHint" v-model="searchText" />
-			</el-col>
-			<el-col :span="searchKeyList && searchKeyList.length > 0 ? 4 : 24" style="text-align: right">
-				<el-button :size="getSize" @click="$emit('addItem')" type="primary">추가하기</el-button>
-			</el-col>
-		</el-row>
+		<el-input
+			:size="getSize"
+			v-model="searchText"
+			:placeholder="props.searchHint"
+			style="width: calc(100% - 100px); margin-right: 16px"
+		>
+			<template #prefix>
+				<i class="bi bi-search"></i>
+			</template>
+		</el-input>
+		<el-button :size="getSize" @click="$emit('addItem')" type="primary">추가하기</el-button>
 	</div>
 	<el-table
 		class-name="app-table-section"

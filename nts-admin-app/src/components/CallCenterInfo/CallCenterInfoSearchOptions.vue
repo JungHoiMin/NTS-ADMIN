@@ -74,7 +74,11 @@ const getSelectedPDS = computed<string>(
 				:size="getSize"
 				placeholder="검색어 (센터명 or 센터코드 스폰서 or 대리점 or IP)"
 				clearable
-			/>
+			>
+				<template #prefix>
+					<i class="bi bi-search"></i>
+				</template>
+			</el-input>
 		</div>
 		<el-collapse v-model="isCollapse">
 			<el-collapse-item name="Y" class="search-option-header">
