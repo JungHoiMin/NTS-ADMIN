@@ -49,12 +49,14 @@ declare module 'vue' {
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
     InsuranceListTable: typeof import('./src/components/Insurance/InsuranceListTable.vue')['default']
     ManagerAvatar: typeof import('./src/components/ManagerAvatar.vue')['default']
     PersionalOptionsSettingDialog: typeof import('./src/components/PersonalOptionsSetting/PersionalOptionsSettingDialog.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SearchOptionTag: typeof import('./src/components/SearchOptionTag.vue')['default']
     SponsorListTable: typeof import('./src/components/Sponsor/SponsorListTable.vue')['default']
   }
 }

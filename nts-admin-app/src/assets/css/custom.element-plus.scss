@@ -21,6 +21,7 @@
  }
 }
 
+.search-option-header,
 .app-table-section,
 .el-button,
 .el-input {
@@ -36,9 +37,28 @@
  border-radius: 1rem;
 }
 
-.el-collapse-item.search-option-header{
+.el-collapse-item.search-option-header {
+
  .el-collapse-item__header {
-  height: 88px;
+  height: auto;
+  display: grid;
+  grid-template-columns: auto 21px;
+  .search-option-header-content {
+   text-align: left;
+   display: block;
+   .insurance-option {
+    & > span {
+     margin-inline: 10px;
+    }
+   }
+   .option-tags {
+    display: flex;
+    flex-wrap: wrap;
+    & > * {
+     margin: 4px 4px;
+    }
+   }
+  }
  }
  .el-collapse-item__content {
   padding-bottom: 0;

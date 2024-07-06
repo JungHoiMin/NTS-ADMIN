@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-	<el-radio-group v-model="selectKey">
+	<el-radio-group v-model="selectKey" style="min-width: 210px">
 		<el-radio-button
 			v-for="option in optionList"
 			:key="option.key"

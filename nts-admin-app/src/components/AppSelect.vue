@@ -76,6 +76,7 @@ onMounted(() => {
 <template>
 	<el-select
 		class="w-220"
+		style="min-width: 210px"
 		:class="selectClass"
 		v-model="selectKey"
 		:placeholder="placeholder"
