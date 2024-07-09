@@ -3,6 +3,7 @@ import { computed, defineModel, type PropType, ref } from 'vue';
 import type { TableColumnType } from '@/types/types.table';
 import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSettingStore';
 import { storeToRefs } from 'pinia';
+import AppSearchAdd from '@/components/AppSearchAdd.vue';
 
 const personalOptionsSettingStore = usePersonalOptionsSettingStore();
 const { getSize } = storeToRefs(personalOptionsSettingStore);
@@ -52,19 +53,7 @@ const getRowHeight = computed(() => {
 </script>
 
 <template>
-	<div class="search-section">
-		<el-input
-			:size="getSize"
-			v-model="searchText"
-			:placeholder="props.searchHint"
-			style="width: calc(100% - 100px); margin-right: 16px"
-		>
-			<template #prefix>
-				<i class="bi bi-search"></i>
-			</template>
-		</el-input>
-		<el-button :size="getSize" @click="$emit('addItem')" type="primary">추가하기</el-button>
-	</div>
+	<AppSearchAdd v-model="searchText" :search-hint="props.searchHint" @addItem="$emit('addItem')" />
 	<el-table
 		class-name="app-table-section"
 		:size="getSize"

@@ -6,6 +6,7 @@ import { useOptionsStore } from '@/stores/useOptionsStore';
 import { computed, ref } from 'vue';
 import AppRadio from '@/components/AppRadio.vue';
 import SearchOptionTag from '@/components/SearchOptionTag.vue';
+import AppSearchAdd from '@/components/AppSearchAdd.vue';
 
 const optionsStore = useOptionsStore();
 const {
@@ -68,18 +69,11 @@ const getSelectedPDS = computed<string>(
 
 <template>
 	<div style="min-width: 380px">
-		<div class="search-section">
-			<el-input
-				v-model="searchText"
-				:size="getSize"
-				placeholder="검색어 (센터명 or 센터코드 스폰서 or 대리점 or IP)"
-				clearable
-			>
-				<template #prefix>
-					<i class="bi bi-search"></i>
-				</template>
-			</el-input>
-		</div>
+		<AppSearchAdd
+			v-model="searchText"
+			search-hint="검색어 (센터명 or 센터코드 스폰서 or 대리점 or IP)"
+			@addItem="() => console.log('')"
+		/>
 		<el-collapse v-model="isCollapse">
 			<el-collapse-item name="Y" class="search-option-header">
 				<template #title>

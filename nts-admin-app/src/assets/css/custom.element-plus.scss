@@ -31,10 +31,15 @@
   box-shadow: none;
  }
 }
-.app-table-section {
- width: 100%;
- height: calc(100% - 160px);
- border-radius: 1rem;
+
+.el-main {
+ display: flex;
+ flex-direction: column;
+ .app-table-section {
+  flex-grow: 1;
+  width: 100%;
+  border-radius: 1rem;
+ }
 }
 
 .el-collapse-item.search-option-header {
