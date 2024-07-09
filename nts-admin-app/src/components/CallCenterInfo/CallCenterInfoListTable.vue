@@ -3,7 +3,6 @@ import CallCenterInfoSearchOptions from '@/components/CallCenterInfo/CallCenterI
 </script>
 
 <template>
-	<div>
-		<CallCenterInfoSearchOptions />
-	</div>
+	<CallCenterInfoSearchOptions />
+	<el-table class="app-table-section"></el-table>
 </template>

@@ -15,18 +15,15 @@ defineEmits(['addItem']);
 </script>
 
 <template>
-	<div class="search-section">
-		<el-input
-			:size="getSize"
-			v-model="searchText"
-			:placeholder="props.searchHint"
-			style="width: calc(100% - 110px); margin-right: 16px"
-		>
+	<div class="m-b-1 flex">
+		<el-input :size="getSize" v-model="searchText" :placeholder="props.searchHint">
 			<template #prefix>
 				<i class="bi bi-search"></i>
 			</template>
 		</el-input>
-		<el-button :size="getSize" @click="$emit('addItem')" type="primary">추가하기</el-button>
+		<el-button :size="getSize" @click="$emit('addItem')" type="primary" style="margin-left: 0.5rem">
+			추가하기
+		</el-button>
 	</div>
 </template>
 

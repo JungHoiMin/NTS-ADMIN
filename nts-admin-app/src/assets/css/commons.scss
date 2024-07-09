@@ -14,6 +14,8 @@
 .p-i-10 { padding-inline: 10px }
 .p-8 { padding: 8px }
 
+.m-b-1 { margin-bottom: 1rem }
+
 .bg-main {
  background-color: rgba(233, 238, 244, 1);
 }
@@ -24,6 +26,6 @@ html.dark {
  }
 }
 
-.search-section {
- padding-block: 20px;
+.flex {
+ display: flex;
 }
