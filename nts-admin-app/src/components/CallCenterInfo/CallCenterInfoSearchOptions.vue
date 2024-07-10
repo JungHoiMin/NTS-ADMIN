@@ -3,10 +3,11 @@ import { usePersonalOptionsSettingStore } from '@/stores/usePersonalOptionsSetti
 import { storeToRefs } from 'pinia';
 import AppSelect from '@/components/AppSelect.vue';
 import { useOptionsStore } from '@/stores/useOptionsStore';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import AppRadio from '@/components/AppRadio.vue';
 import SearchOptionTag from '@/components/SearchOptionTag.vue';
 import AppSearchAdd from '@/components/AppSearchAdd.vue';
+import type { SelectedOptionInterface } from '@/types/types.options';
 
 const optionsStore = useOptionsStore();
 const {
@@ -21,15 +22,29 @@ const {
 const personalOptionsSettingStore = usePersonalOptionsSettingStore();
 const { getSize, getIsCollapse } = storeToRefs(personalOptionsSettingStore);
 
-const searchText = ref<string>('');
-const selectedInsuranceList = ref<string[]>([]);
-const selectedOperation = ref<number>(-1);
-const selectedMultipleInsurance = ref<number>(-1);
-const selectedIntegSalesTable = ref<number>(-1);
-const selectedOnnara = ref<number>(-1);
-const selectedPDS = ref<number>(-1);
+const emit = defineEmits<{
+	(e: 'change:options', data: SelectedOptionInterface): void;
+}>();
 
-const isCollapse = computed<'Y' | 'N'>(() => (getIsCollapse.value ? 'N' : 'Y'));
+const data = ref<SelectedOptionInterface>({
+	searchText: '',
+	selectedInsuranceList: [],
+	selectedOperation: -1,
+	selectedMultipleInsurance: -1,
+	selectedIntegSalesTable: -1,
+	selectedOnnara: -1,
+	selectedPDS: -1,
+});
+
+// const searchText = ref<string>('');
+// const selectedInsuranceList = ref<string[]>([]);
+// const selectedOperation = ref<number>(-1);
+// const selectedMultipleInsurance = ref<number>(-1);
+// const selectedIntegSalesTable = ref<number>(-1);
+// const selectedOnnara = ref<number>(-1);
+// const selectedPDS = ref<number>(-1);
+
+const isCollapse = ref<'Y' | 'N'>(getIsCollapse.value ? 'N' : 'Y');
 
 // const getSelectedInsurance = computed<string>(() =>
 // 	getInsuranceOptions.value
@@ -40,36 +55,49 @@ const isCollapse = computed<'Y' | 'N'>(() => (getIsCollapse.value ? 'N' : 'Y'));
 
 const getSelectedOperation = computed<string>(
 	() =>
-		getOperationOptionsForSearch.value.find((option) => option.key === selectedOperation.value)
+		getOperationOptionsForSearch.value.find((option) => option.key === data.value.selectedOperation)
 			?.value || '',
 );
 
 const getSelectedMultipleInsurance = computed<string>(
 	() =>
 		getMultipleInsuranceOptionsForSearch.value.find(
-			(option) => option.key === selectedMultipleInsurance.value,
+			(option) => option.key === data.value.selectedMultipleInsurance,
 		)?.value || '',
 );
 const getSelectedIntegSalesTable = computed<string>(
 	() =>
 		getIntegSalesTableOptionsForSearch.value.find(
-			(option) => option.key === selectedIntegSalesTable.value,
+			(option) => option.key === data.value.selectedIntegSalesTable,
 		)?.value || '',
 );
 const getSelectedOnnara = computed<string>(
 	() =>
-		getOnnaraOptionsForSearch.value.find((option) => option.key === selectedOnnara.value)?.value ||
-		'',
+		getOnnaraOptionsForSearch.value.find((option) => option.key === data.value.selectedOnnara)
+			?.value || '',
 );
 const getSelectedPDS = computed<string>(
 	() =>
-		getPDSOptionsForSearch.value.find((option) => option.key === selectedPDS.value)?.value || '',
+		getPDSOptionsForSearch.value.find((option) => option.key === data.value.selectedPDS)?.value ||
+		'',
+);
+
+let updateJob: number;
+watch(
+	() => data.value,
+	() => {
+		clearTimeout(updateJob);
+		updateJob = setTimeout(() => {
+			emit('change:options', data.value);
+		}, 500);
+	},
+	{ deep: true, flush: 'sync' },
 );
 </script>
 
 <template>
 	<AppSearchAdd
-		v-model="searchText"
+		v-model="data.searchText"
 		search-hint="검색어 (센터명 or 센터코드 스폰서 or 대리점 or IP)"
 		@addItem="() => console.log('')"
 	/>
@@ -80,7 +108,7 @@ const getSelectedPDS = computed<string>(
 					<div class="insurance-option">
 						<el-text :size="getSize">보험사</el-text>
 						<AppSelect
-							v-model="selectedInsuranceList"
+							v-model="data.selectedInsuranceList"
 							:option-list="getInsuranceOptions"
 							selectClass="insurance-select"
 							select-all
@@ -89,27 +117,27 @@ const getSelectedPDS = computed<string>(
 					</div>
 					<div class="option-tags">
 						<SearchOptionTag
-							v-model="selectedOperation"
+							v-model="data.selectedOperation"
 							:option-value="getSelectedOperation"
 							label="운영 여부"
 						/>
 						<SearchOptionTag
-							v-model="selectedMultipleInsurance"
+							v-model="data.selectedMultipleInsurance"
 							:option-value="getSelectedMultipleInsurance"
 							label="복합 센터 여부"
 						/>
 						<SearchOptionTag
-							v-model="selectedIntegSalesTable"
+							v-model="data.selectedIntegSalesTable"
 							:option-value="getSelectedIntegSalesTable"
 							label="청약 테이블 적용 여부"
 						/>
 						<SearchOptionTag
-							v-model="selectedOnnara"
+							v-model="data.selectedOnnara"
 							:option-value="getSelectedOnnara"
 							label="온나라 적용 여부"
 						/>
 						<SearchOptionTag
-							v-model="selectedPDS"
+							v-model="data.selectedPDS"
 							:option-value="getSelectedPDS"
 							label="PDS 적용 여부"
 						/>
@@ -127,12 +155,12 @@ const getSelectedPDS = computed<string>(
 			>
 				<el-form-item>
 					<template #label><el-text>운영 여부</el-text></template>
-					<AppSelect v-model="selectedOperation" :option-list="getOperationOptionsForSearch" />
+					<AppSelect v-model="data.selectedOperation" :option-list="getOperationOptionsForSearch" />
 				</el-form-item>
 				<el-form-item>
 					<template #label><el-text>복합 센터 여부</el-text></template>
 					<AppSelect
-						v-model="selectedMultipleInsurance"
+						v-model="data.selectedMultipleInsurance"
 						:option-list="getMultipleInsuranceOptionsForSearch"
 					/>
 				</el-form-item>
@@ -142,17 +170,17 @@ const getSelectedPDS = computed<string>(
 				<el-form-item>
 					<template #label><el-text>청약 테이블 적용 여부</el-text></template>
 					<AppRadio
-						v-model="selectedIntegSalesTable"
+						v-model="data.selectedIntegSalesTable"
 						:option-list="getIntegSalesTableOptionsForSearch"
 					/>
 				</el-form-item>
 				<el-form-item>
 					<template #label><el-text>온나라 적용 여부</el-text></template>
-					<AppRadio v-model="selectedOnnara" :option-list="getOnnaraOptionsForSearch" />
+					<AppRadio v-model="data.selectedOnnara" :option-list="getOnnaraOptionsForSearch" />
 				</el-form-item>
 				<el-form-item>
 					<template #label><el-text>PDS 적용 여부</el-text></template>
-					<AppRadio v-model="selectedPDS" :option-list="getPDSOptionsForSearch" />
+					<AppRadio v-model="data.selectedPDS" :option-list="getPDSOptionsForSearch" />
 				</el-form-item>
 				<!--					<el-form-item label="NTS 담당자">-->
 				<!--						<AppSelect v-model="" :option-list="" />-->
