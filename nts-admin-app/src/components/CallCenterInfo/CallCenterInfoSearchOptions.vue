@@ -24,10 +24,11 @@ const { getSize, getIsCollapse } = storeToRefs(personalOptionsSettingStore);
 
 const emit = defineEmits<{
 	(e: 'change:options', data: SelectedOptionInterface): void;
+	(e: 'change:searchText', data: string): void;
 }>();
 
+const searchText = ref<string>('');
 const data = ref<SelectedOptionInterface>({
-	searchText: '',
 	selectedInsuranceList: [],
 	selectedOperation: -1,
 	selectedMultipleInsurance: -1,
@@ -84,21 +85,26 @@ const getSelectedPDS = computed<string>(
 
 let updateJob: number;
 watch(
-	() => data.value,
+	() => searchText.value,
 	() => {
 		clearTimeout(updateJob);
 		updateJob = setTimeout(() => {
-			emit('change:options', data.value);
+			emit('change:searchText', searchText.value.trim());
 		}, 500);
 	},
+	{ deep: true, flush: 'sync' },
+);
+watch(
+	() => data.value,
+	() => emit('change:options', data.value),
 	{ deep: true, flush: 'sync' },
 );
 </script>
 
 <template>
 	<AppSearchAdd
-		v-model="data.searchText"
-		search-hint="검색어 (센터명 or 센터코드 스폰서 or 대리점 or IP)"
+		v-model="searchText"
+		search-hint="검색어 (센터명 or 센터코드 or 스폰서 or 대리점 or IP)"
 		@addItem="() => console.log('')"
 	/>
 	<el-collapse v-model="isCollapse" class="m-b-1">

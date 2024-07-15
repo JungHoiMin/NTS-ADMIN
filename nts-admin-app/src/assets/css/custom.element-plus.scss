@@ -33,12 +33,16 @@
 }
 
 .el-main {
+ min-width: 420px;
  display: flex;
  flex-direction: column;
  .app-table-section {
   flex-grow: 1;
   width: 100%;
   border-radius: 1rem;
+  .el-button {
+   box-shadow: none;
+  }
  }
 }
 

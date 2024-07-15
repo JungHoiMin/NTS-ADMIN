@@ -99,6 +99,7 @@ export const useOptionsStore = defineStore('options', () => {
 	const getInsuranceOptions = computed<OptionType[]>(() => {
 		const insuranceStore = useInsuranceStore();
 		const { getInsuranceList } = storeToRefs(insuranceStore);
+
 		return getInsuranceList.value.map((insurance) => ({
 			key: insurance.code,
 			value: insurance.name,

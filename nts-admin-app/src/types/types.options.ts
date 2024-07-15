@@ -1,8 +1,7 @@
 export type OptionType = { key: number | string; value: string };
 
 export interface SelectedOptionInterface {
-	searchText: string;
-	selectedInsuranceList: number[];
+	selectedInsuranceList: string[];
 	selectedOperation: number;
 	selectedMultipleInsurance: number;
 	selectedIntegSalesTable: number;

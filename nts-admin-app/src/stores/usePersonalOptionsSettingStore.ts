@@ -32,6 +32,7 @@ export type PersonalOptionsType = {
 	showDetail: boolean;
 	detailTrigger: TriggerType;
 	detailPlacement: PlacementType;
+	useAndFilter: boolean;
 };
 
 export const usePersonalOptionsSettingStore = defineStore('personalOptionsSetting', () => {
@@ -48,6 +49,11 @@ export const usePersonalOptionsSettingStore = defineStore('personalOptionsSettin
 	// NOTE:: 크기 옵션
 	const size = ref<SizeType>(secureLocalStorage.getItem<SizeType>('size') || 'default');
 	const getSize = computed(() => size.value);
+	const getTableRowClassOfHeight = computed(() => {
+		if (size.value === 'small') return 'h-36';
+		else if (size.value === 'large') return 'h-66';
+		else return 'h-50';
+	});
 	const setSize = (option: SizeType) => {
 		size.value = option;
 		secureLocalStorage.setItem('size', option);
@@ -129,10 +135,19 @@ export const usePersonalOptionsSettingStore = defineStore('personalOptionsSettin
 		secureLocalStorage.setItem('detailPlacement', option);
 	};
 
+	// NOTE:: 센터 정보 관리 검색 시 And조건으로 검색할지 Or조건으로 검색할 지에 대한 옵션
+	const useAndFilter = ref<boolean>(secureLocalStorage.getItem<boolean>('useAndFilter') || true);
+	const getUseAndFilter = computed(() => useAndFilter.value);
+	const setUseAndFilter = (option: boolean) => {
+		useAndFilter.value = option;
+		secureLocalStorage.setItem('useAndFilter', option);
+	};
+
 	return {
 		getTheme,
 		setTheme,
 		getSize,
+		getTableRowClassOfHeight,
 		setSize,
 		getIsCollapse,
 		setIsCollapse,
@@ -152,5 +167,7 @@ export const usePersonalOptionsSettingStore = defineStore('personalOptionsSettin
 		setDetailTrigger,
 		getDetailPlacement,
 		setDetailPlacement,
+		getUseAndFilter,
+		setUseAndFilter,
 	};
 });

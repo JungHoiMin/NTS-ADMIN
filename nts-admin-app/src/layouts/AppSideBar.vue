@@ -54,4 +54,8 @@ const goPageByName = (name: string, replace: boolean = true) => {
 	height: 100%;
 	user-select: none;
 }
+
+.el-menu-item.is-active {
+	background-color: #e4e3ff;
+}
 </style>

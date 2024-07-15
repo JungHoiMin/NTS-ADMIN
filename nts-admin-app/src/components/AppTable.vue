@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 import AppSearchAdd from '@/components/AppSearchAdd.vue';
 
 const personalOptionsSettingStore = usePersonalOptionsSettingStore();
-const { getSize } = storeToRefs(personalOptionsSettingStore);
+const { getSize, getTableRowClassOfHeight } = storeToRefs(personalOptionsSettingStore);
 
 const columnList = defineModel<TableColumnType[]>('columnList', { required: true });
 const tableData = defineModel<any[]>('tableData', { required: true });
@@ -44,12 +44,6 @@ const cellClassName = (data: { row: any; column: any; rowIndex: number; columnIn
 		return 'actions';
 	}
 };
-
-const getRowHeight = computed(() => {
-	if (getSize.value === 'small') return 'h-36';
-	else if (getSize.value === 'large') return 'h-66';
-	else return 'h-50';
-});
 </script>
 
 <template>
@@ -58,7 +52,7 @@ const getRowHeight = computed(() => {
 		class-name="app-table-section"
 		:size="getSize"
 		:data="searchedTableData"
-		:row-class-name="`table-row ${getRowHeight}`"
+		:row-class-name="`table-row ${getTableRowClassOfHeight}`"
 		:cell-class-name="cellClassName"
 	>
 		<el-table-column

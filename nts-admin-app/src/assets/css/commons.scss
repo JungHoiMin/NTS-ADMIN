@@ -29,3 +29,24 @@ html.dark {
 .flex {
  display: flex;
 }
+
+@keyframes flowText {
+ 0% {
+  transform: translateX(0);
+ }
+ 100% {
+  transform: translateX(-50%);
+ }
+}
+
+.el-button.flowText {
+ overflow: hidden;
+
+ &:hover {
+  //transform: translateX(-100%);
+
+  animation: flowText linear infinite forwards;
+  animation-iteration-count: revert;
+  animation-duration: 4s;
+ }
+}
