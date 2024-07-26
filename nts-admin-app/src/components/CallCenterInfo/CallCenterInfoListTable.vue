@@ -9,7 +9,7 @@ import AppPopover from '@/components/AppPopover.vue';
 import dayjs from 'dayjs';
 
 const personalOptionsSettingStore = usePersonalOptionsSettingStore();
-const { getUseAndFilter, getSize, getTableRowClassOfHeight } = storeToRefs(
+const { getUseAndFilter, getSize, getTableRowClassOfHeight, getUsePlatform } = storeToRefs(
 	personalOptionsSettingStore,
 );
 
@@ -179,6 +179,22 @@ const getColumnWith = (
 	}
 	return result;
 };
+
+const remote = (data: { ip: string; port: number }) => {
+	if (getUsePlatform.value === 'browser') {
+		window.open(`centeradmin://${data.ip}:${data.port}`, '_self');
+	} else {
+		// TODO:: IPC
+	}
+};
+const getRemoteAddress = (info: CallCenterInfoType, prop: 'SSLVPN' | 'DBServer' | 'AppServer') => {
+	let ip: string;
+	let port: number;
+
+	ip = '19.19.20.89';
+	port = 3389;
+	return { ip, port };
+};
 </script>
 
 <template>
@@ -216,7 +232,12 @@ const getColumnWith = (
 				<el-button :size="getSize">
 					{{ getAddress(scope.row as CallCenterInfoType, 'SSLVPN') }}
 				</el-button>
-				<el-button :size="getSize">원격</el-button>
+				<el-button
+					:size="getSize"
+					@click="remote(getRemoteAddress(scope.row as CallCenterInfoType, 'SSLVPN'))"
+				>
+					원격
+				</el-button>
 			</template>
 		</el-table-column>
 		<el-table-column label="DB Server" :width="getColumnWith('DBServer')">
@@ -224,7 +245,12 @@ const getColumnWith = (
 				<el-button :size="getSize">
 					{{ getAddress(scope.row as CallCenterInfoType, 'DBServer') }}
 				</el-button>
-				<el-button :size="getSize">원격</el-button>
+				<el-button
+					:size="getSize"
+					@click="remote(getRemoteAddress(scope.row as CallCenterInfoType, 'DBServer'))"
+				>
+					원격
+				</el-button>
 			</template>
 		</el-table-column>
 		<el-table-column label="App Server" :width="getColumnWith('AppServer')">
@@ -232,7 +258,12 @@ const getColumnWith = (
 				<el-button :size="getSize">
 					{{ getAddress(scope.row as CallCenterInfoType, 'AppServer') }}
 				</el-button>
-				<el-button :size="getSize">원격</el-button>
+				<el-button
+					:size="getSize"
+					@click="remote(getRemoteAddress(scope.row as CallCenterInfoType, 'AppServer'))"
+				>
+					원격
+				</el-button>
 			</template>
 		</el-table-column>
 		<el-table-column label="DB" :width="getColumnWith('DB')">
