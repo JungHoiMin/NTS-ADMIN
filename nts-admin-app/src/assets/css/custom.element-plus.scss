@@ -21,6 +21,7 @@
  }
 }
 
+.search-option-header,
 .app-table-section,
 .el-button,
 .el-input {
@@ -30,8 +31,45 @@
   box-shadow: none;
  }
 }
-.app-table-section {
- width: 100%;
- height: calc(100% - 160px);
- border-radius: 1rem;
+
+.el-main {
+ width: auto;
+ display: flex;
+ flex-direction: column;
+ .app-table-section {
+  flex-grow: 1;
+  width: 100%;
+  border-radius: 1rem;
+  .el-button {
+   box-shadow: none;
+  }
+ }
+}
+
+.el-collapse-item.search-option-header {
+
+ .el-collapse-item__header {
+  height: auto;
+  display: grid;
+  grid-template-columns: auto 21px;
+  .search-option-header-content {
+   text-align: left;
+   display: block;
+   .insurance-option {
+    & > span {
+     margin-inline: 10px;
+    }
+   }
+   .option-tags {
+    display: flex;
+    flex-wrap: wrap;
+    & > * {
+     margin: 4px 4px;
+    }
+   }
+  }
+ }
+ .el-collapse-item__content {
+  padding-bottom: 0;
+ }
 }

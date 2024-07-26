@@ -38,7 +38,7 @@ onBeforeMount(async () => {
 <template>
 	<div class="main-layout">
 		<el-container>
-			<el-aside width="200px">
+			<el-aside width="auto">
 				<AppSideBar />
 			</el-aside>
 			<el-main class="bg-main">
