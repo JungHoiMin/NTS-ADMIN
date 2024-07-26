@@ -35,17 +35,17 @@ export class InsuranceController {
     return await this.insuranceService.findInsurance('ALL');
   }
 
-  @Get(':idx')
+  @Get(':code')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: '보험사 정보를 조회(보험사코드)',
     description: '보험사 코드를 파라미터로 받아 보험사 정보를 반환함',
   })
-  @ApiParam({ name: 'idx', description: '보험사 키 값', required: true })
+  @ApiParam({ name: 'code', description: '보험사 코드', required: true })
   @ApiBearerAuth('access-token')
-  async getInsuranceByCode(@Req() req: Request, @Param('idx') idx: number) {
-    this.logger.log(`${req['user'].id}님이 ${idx}키 값으로 보험사 정보를 조회함`);
-    return await this.insuranceService.findInsurance('ONE', { idx });
+  async getInsuranceByCode(@Req() req: Request, @Param('code') code: string) {
+    this.logger.log(`${req['user'].id}님이 ${code}로 보험사 정보를 조회함`);
+    return await this.insuranceService.findInsurance('ONE', { code });
   }
 
   @Post()
@@ -57,42 +57,40 @@ export class InsuranceController {
   @ApiBearerAuth('access-token')
   async createInsurance(@Req() req: Request, @Body() createInsuranceDto: CreateInsuranceDto) {
     const creator = req['user'].id;
-    this.logger.log(
-      `${creator}님이 ${createInsuranceDto.name}(${createInsuranceDto.code}) 보험사 정보를 등록함`,
-    );
+    this.logger.log(`${creator}님이 ${createInsuranceDto.toString()}) 보험사 정보를 등록함`);
     return await this.insuranceService.createInsurance(creator, createInsuranceDto);
   }
 
-  @Put(':idx')
+  @Put(':code')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: '보험사 정보 수정',
     description: '보험사 코드를 파라미터로 받고 Body를 받아 보험사 정보를 수정함',
   })
-  @ApiParam({ name: 'idx', description: '보험사 키 값', required: true })
+  @ApiParam({ name: 'code', description: '보험사 코드', required: true })
   @ApiBody({ type: UpdateInsuranceDto })
   @ApiBearerAuth('access-token')
   async updateInsurance(
     @Req() req: Request,
-    @Param('idx') idx: number,
+    @Param('code') code: string,
     @Body() updateInsuranceDto: UpdateInsuranceDto,
   ) {
     const updater = req['user'].id;
-    this.logger.log(`${updater}님이 ${idx}번 보험사 정보를 수정함`);
-    return await this.insuranceService.updateInsurance(updater, idx, updateInsuranceDto);
+    this.logger.log(`${updater}님이 ${code} 보험사 정보를 수정함`);
+    return await this.insuranceService.updateInsurance(updater, code, updateInsuranceDto);
   }
 
-  @Delete(':idx')
+  @Delete(':code')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: '보험사 정보 삭제',
     description: '보험사 코드를 파라미터로 받아 보험사 정보를 삭제함',
   })
-  @ApiParam({ name: 'idx', description: '보험사 키 값', required: true })
+  @ApiParam({ name: 'code', description: '보험사 코드 값', required: true })
   @ApiBearerAuth('access-token')
-  async deleteInsurance(@Req() req: Request, @Param('idx') idx: number) {
+  async deleteInsurance(@Req() req: Request, @Param('code') code: string) {
     const updater = req['user'].id;
-    this.logger.log(`${updater}님이 ${idx}번 보험사 정보를 삭제함`);
-    return await this.insuranceService.deleteInsurance(updater, idx);
+    this.logger.log(`${updater}님이 ${code}번 보험사 정보를 삭제함`);
+    return await this.insuranceService.deleteInsurance(updater, code);
   }
 }

@@ -1,9 +1,9 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { CommonEntity } from '../../commons/entities/common.entity';
 
 @Entity({ name: 'insurance' })
 export class InsuranceEntity extends CommonEntity {
-  @Column('char', { length: 2, nullable: false })
+  @PrimaryColumn('char', { length: 2, nullable: false })
   code: string;
 
   @Column('varchar', { nullable: false })

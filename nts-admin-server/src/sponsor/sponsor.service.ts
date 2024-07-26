@@ -83,8 +83,8 @@ export class SponsorService {
   async deleteSponsor(updater: string, idx: string) {
     await this.dataSource
       .createQueryBuilder()
-      .update(SponsorEntity)
-      .set({ updater, isUsed: false })
+      .delete()
+      .from(SponsorEntity)
       .where('idx = :idx', { idx })
       .execute();
 

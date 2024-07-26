@@ -1,15 +1,6 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 export abstract class CommonEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  idx: number;
-
   @Column('boolean', { nullable: false, default: true })
   isUsed: boolean;
 
